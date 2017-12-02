@@ -1,5 +1,7 @@
 # ========== PROJECT ===============================
 
+/Assets/HitchLib/Build and Deploy/Editor/
+
 # ========== LIBRARIES =============================
 
 *.dll

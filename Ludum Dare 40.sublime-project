@@ -1,0 +1,31 @@
+{
+  "folders":
+  [
+    {
+      "file_include_patterns":
+      [
+        ".gitignore",
+        "*.sublime-project"
+      ],
+      "folder_exclude_patterns":
+      [
+        "*"
+      ],
+      "name": "Project",
+      "path": "."
+    },
+    {
+      "file_exclude_patterns":
+      [
+        "*.meta"
+      ],
+      "path": "Assets"
+    }
+  ],
+  "settings":
+  {
+    "atomic_save": true,
+    "ensure_newline_at_eof_on_save": true
+  },
+  "solution_file": "./Ludum Dare 40.sln"
+}
