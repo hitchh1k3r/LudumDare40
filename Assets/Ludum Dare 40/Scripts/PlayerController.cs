@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
-    if(!GameStateManager.IsMenu)
+    if(!GameStateManager.IsMenu && GameStateManager.HasFocus)
     {
       Vector3 oldPos = transform.localPosition;
       Quaternion cameraForward = Quaternion.Euler(0, cam.eulerAngles.y, 0);
