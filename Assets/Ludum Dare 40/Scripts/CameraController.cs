@@ -17,63 +17,26 @@ public class CameraController : MonoBehaviour
   [HitchLib.MinMaxAttribute(0, 90)]
   public Vector2 pitchLimits = new Vector2(10, 80);
 
-  // State:
-  private bool lastMenuState;
-
   // Messages:
-
-  void Awake()
-  {
-    Cursor.lockState = CursorLockMode.Locked;
-    Cursor.visible = false;
-  }
 
   void Update()
   {
-    if(lastMenuState != GameStateManager.IsMenu)
+    if(!GameStateManager.IsMenu && GameStateManager.HasFocus)
     {
-      lastMenuState = GameStateManager.IsMenu;
-      if(GameStateManager.IsMenu)
+      yaw += yawSpeed * Input.GetAxisRaw("Mouse X");
+      pitch += pitchSpeed * Input.GetAxisRaw("Mouse Y");
+      if(pitch < pitchLimits.x)
       {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        pitch = pitchLimits.x;
       }
-      else
+      if(pitch > pitchLimits.y)
       {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        pitch = pitchLimits.y;
       }
+      transform.eulerAngles = new Vector3(pitch, yaw, roll);
     }
-    if(!GameStateManager.IsMenu)
-    {
-      Rect screenRect = new Rect(0, 0, Screen.width, Screen.height);
-      if(Input.GetMouseButton(0) && screenRect.Contains(Input.mousePosition))
-      {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-      }
-      else if(Input.GetButton("Cancel"))
-      {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-      }
-      if(Cursor.lockState == CursorLockMode.Locked)
-      {
-        yaw += yawSpeed * Input.GetAxisRaw("Mouse X");
-        pitch += pitchSpeed * Input.GetAxisRaw("Mouse Y");
-        if(pitch < pitchLimits.x)
-        {
-          pitch = pitchLimits.x;
-        }
-        if(pitch > pitchLimits.y)
-        {
-          pitch = pitchLimits.y;
-        }
-        transform.eulerAngles = new Vector3(pitch, yaw, roll);
-      }
-      transform.position = Vector3.Lerp(transform.position, target.position + targetOffset,
-            HitchLib.Math.HalfLifeInterp(1.0f / camSpeed, Time.deltaTime));
-    }
+    transform.position = Vector3.Lerp(transform.position, target.position + targetOffset,
+          HitchLib.Math.HalfLifeInterp(1.0f / camSpeed, Time.deltaTime));
   }
 
 }

@@ -1401,14 +1401,14 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 400177101}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.00000016391276}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.5, y: 1.5, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children:
   - {fileID: 258503351}
   m_Father: {fileID: 469041531}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180.00002, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &400177103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1421,7 +1421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -1782,7 +1782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -2314,7 +2314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -2723,7 +2723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -4045,7 +4045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -4775,7 +4775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -4918,7 +4918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -5141,7 +5141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 8b54b0a1c3645d842b34f5a77855b4f9, type: 3}
+  lightTexture: {fileID: 2800000, guid: 1d022e1cdad0143749b4f1c3b4a82537, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
@@ -5236,7 +5236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 9e0a6183cbb4c4566ba19c9711573c29, type: 3}
+  lightTexture: {fileID: 2800000, guid: c6ec288b074384dd0a5ae720ff3d20b5, type: 3}
   xOffset: 0.5
   yOffset: 0
   directionShading: 1
@@ -7670,7 +7670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16dd03e9382f014ea2174727bad80c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightTexture: {fileID: 2800000, guid: 8b54b0a1c3645d842b34f5a77855b4f9, type: 3}
+  lightTexture: {fileID: 2800000, guid: 1d022e1cdad0143749b4f1c3b4a82537, type: 3}
   xOffset: 0
   yOffset: 0
   directionShading: 1
