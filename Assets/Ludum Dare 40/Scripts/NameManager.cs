@@ -9,6 +9,9 @@ public class NameManager : HitchLib.Singleton // MonoBehaviour
 
   // State:
   private string[] names;
+  private string myFirstName;
+  private string myLastInitial;
+  private string myLastName;
 
   // Static Instance:
   private static NameManager instance;
@@ -35,6 +38,18 @@ public class NameManager : HitchLib.Singleton // MonoBehaviour
         ++f;
       }
     }
+  }
+
+  public static void SetMyName(string first, string last)
+  {
+    instance.myFirstName = first;
+    instance.myLastName = last;
+    instance.myLastInitial = (last[0] + ".").ToUpper();
+  }
+
+  public static string GetMyName()
+  {
+    return instance.myFirstName + " " + instance.myLastInitial;
   }
 
   public static string GetName()
