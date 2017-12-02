@@ -1,7 +1,7 @@
-Ludum Dare 40 :: Theme "________________"
+Ludum Dare 40 :: Theme "The more you have, the worse it is"
 ====================
 
-A game made in ~48 hours for the [40th Ludum Dare](https://ldjam.com/events/ludum-dare/40) game development jam using [Unity](https://unity3d.com/). The theme was "________________". At some point I may update this template text with a proper description... until then enjoy the mystery.
+A game made in ~48 hours for the [40th Ludum Dare](https://ldjam.com/events/ludum-dare/40) game development jam using [Unity](https://unity3d.com/). The theme was "The more you have, the worse it is". At some point I may update this template text with a proper description... until then enjoy the mystery.
 
 License
 -----------
