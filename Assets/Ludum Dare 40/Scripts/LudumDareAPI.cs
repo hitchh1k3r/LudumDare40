@@ -49,41 +49,35 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
 
   private IEnumerator DoLDLookup(string username)
   {
-    WWW req = new WWW("https://api.ldjam.com/vx/node/walk/1/users/" + username);
+    WWWForm form = new WWWForm();
+    form.AddField("username", username);
+    WWW req = new WWW("https://hitchh1k3rsguide.com/api/ld.php", form);
     yield return req;
-    UserNodeJSON usernode = JsonUtility.FromJson<UserNodeJSON>(req.text);
-    print(usernode);
-    if(usernode.status == 200)
+    UserDataJSON userdata = JsonUtility.FromJson<UserDataJSON>(req.text);
+    if(userdata != null && userdata.status == 200)
     {
-      ludumDareID = usernode.node;
-      req = new WWW("https://api.ldjam.com/vx/node/get/" + ludumDareID);
-      yield return req;
-      UserDataJSON userdata = JsonUtility.FromJson<UserDataJSON>(req.text);
-      if(userdata.status == 200)
+      if(userdata.node[0].name != "Users")
       {
         this.username = userdata.node[0].name;
-        req = new WWW("https://static.jam.vg" + userdata.node[0].meta.avatar + ".256x256.png");
+        ludumDareID = userdata.node[0].id;
+        form = new WWWForm();
+        form.AddField("img", userdata.node[0].meta.avatar + ".256x256.png");
+        req = new WWW("https://hitchh1k3rsguide.com/api/ld_img.php", form);
         yield return req;
-        userAvatar = req.texture;
-        if(userAvatar != null)
+        if(!string.IsNullOrEmpty(req.text))
         {
-          userAvatar.filterMode = FilterMode.Point;
-          userAvatar.wrapMode = TextureWrapMode.Clamp;
+          userAvatar = req.texture;
+          if(userAvatar != null)
+          {
+            userAvatar.filterMode = FilterMode.Point;
+            userAvatar.wrapMode = TextureWrapMode.Clamp;
+          }
         }
       }
     }
   }
 
   // JSON Objects:
-
-  [Serializable]
-  private class UserNodeJSON
-  {
-    public int status;
-    public int caller_id;
-    public int root;
-    public int node;
-  }
 
   [Serializable]
   private class UserDataJSON
@@ -96,6 +90,7 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
   [Serializable]
   private class UserDataNode
   {
+    public int id;
     public string slug;
     public string name;
     public UserMeta meta;

@@ -10,6 +10,14 @@ public class TestShow : MonoBehaviour
     GameStateManager.IsMenu = true;
     yield return HitchLib.Tweening.EasyUIShow(GetComponent<CanvasGroup>(), positionStart:
       new Vector2(0, -400));
+    while(string.IsNullOrEmpty(LudumDareAPI.GetUsername()))
+    {
+      yield return null;
+    }
+    yield return new WaitForSeconds(5.0f);
+    yield return HitchLib.Tweening.EasyUIHide(GetComponent<CanvasGroup>(), positionEnd:
+      new Vector2(0, -400));
+    GameStateManager.IsMenu = false;
   }
 
 }
