@@ -9,7 +9,6 @@ public class WallRenderer : MonoBehaviour
 
   // Configuration:
   public Texture lightTexture;
-  public Texture darkTexture;
   public float xOffset;
   public float yOffset;
   public float directionShading = 1;
@@ -44,16 +43,12 @@ public class WallRenderer : MonoBehaviour
     block.SetVector("_Light", new Vector4(directionShading, backWallOpacity, obscureWall ? 1 : 0, 0));
     if(lightTexture != null)
     {
-      block.SetTexture("_LightTex", lightTexture);
+      block.SetTexture("_Tex", lightTexture);
       renderer.enabled = true;
     }
     else
     {
       renderer.enabled = false;
-    }
-    if(darkTexture != null)
-    {
-      block.SetTexture("_DarkTex", darkTexture);
     }
     renderer.SetPropertyBlock(block);
   }

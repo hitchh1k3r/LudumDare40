@@ -65,8 +65,11 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
         req = new WWW("https://static.jam.vg" + userdata.node[0].meta.avatar + ".256x256.png");
         yield return req;
         userAvatar = req.texture;
-        userAvatar.filterMode = FilterMode.Point;
-        userAvatar.wrapMode = TextureWrapMode.Clamp;
+        if(userAvatar != null)
+        {
+          userAvatar.filterMode = FilterMode.Point;
+          userAvatar.wrapMode = TextureWrapMode.Clamp;
+        }
       }
     }
   }
