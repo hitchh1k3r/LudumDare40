@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 713f6f7eff62e427ca1c352762deb0cd
+timeCreated: 1512221191
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Junction
+  fontNames:
+  - Junction
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 6b9ce915cfba24474bd554bf87556c34, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
