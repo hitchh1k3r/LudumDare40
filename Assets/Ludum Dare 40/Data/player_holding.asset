@@ -11,15 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ffd6ba7e4f14449ab1e063e5eacc653, type: 3}
   m_Name: player_holding
   m_EditorClassIdentifier: 
-  downStill: {fileID: 0}
-  downFrame1: {fileID: 0}
-  downFrame2: {fileID: 0}
-  leftStill: {fileID: 0}
-  leftFrame1: {fileID: 0}
-  leftFrame2: {fileID: 0}
-  rightStill: {fileID: 0}
-  rightFrame1: {fileID: 0}
-  rightFrame2: {fileID: 0}
-  upStill: {fileID: 0}
-  upFrame1: {fileID: 0}
-  upFrame2: {fileID: 0}
+  downStill: {fileID: 21300000, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  downFrame1: {fileID: 21300008, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  downFrame2: {fileID: 21300016, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  leftStill: {fileID: 21300004, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  leftFrame1: {fileID: 21300012, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  leftFrame2: {fileID: 21300020, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  rightStill: {fileID: 21300006, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  rightFrame1: {fileID: 21300014, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  rightFrame2: {fileID: 21300022, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  upStill: {fileID: 21300002, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  upFrame1: {fileID: 21300010, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
+  upFrame2: {fileID: 21300018, guid: 0e76245f74aa54b31947e26c7e053249, type: 3}
