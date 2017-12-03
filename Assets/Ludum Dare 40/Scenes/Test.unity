@@ -10073,7 +10073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   login: {fileID: 2063521030}
   friendBay: {fileID: 1624408539}
-  menu: 0
+  menu: 1
 --- !u!1001 &1693408177
 Prefab:
   m_ObjectHideFlags: 0
