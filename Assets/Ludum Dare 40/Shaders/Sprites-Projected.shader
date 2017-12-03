@@ -49,17 +49,11 @@ Shader "Custom/Projected Sprite"
           camUp.y = 0.0000001;
         }
 
-        vertex.y /= camUp.y;
+        vertex.y *= 1 / camUp.y;
         vertex.xz = vertex.x * camRight.xz;
         vertex += float4(mul(UNITY_MATRIX_M, float4(0, 0, 0, 1)).xyz, 1);
 
         OUT.vertex = mul(UNITY_MATRIX_VP, vertex);
-
-        //*
-        OUT.vertex = mul(UNITY_MATRIX_P, mul(UNITY_MATRIX_MV, float4(0.0, 0.0, 0.0, 1.0))
-              - float4(IN.vertex.x, IN.vertex.y, 0.0, 0.0) * float4(-1, -1, 1.0, 1.0));
-        //*/
-
         OUT.texcoord = IN.texcoord;
         OUT.color = IN.color * _Color * _RendererColor;
 
@@ -67,8 +61,7 @@ Shader "Custom/Projected Sprite"
         OUT.vertex = UnityPixelSnap(OUT.vertex);
 #endif
 
-        return OUT;
-      }
+        return OUT;      }
 
       fixed4 frag(v2f IN) : SV_Target
       {

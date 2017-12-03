@@ -9,6 +9,7 @@ public class WallRenderer : MonoBehaviour
 
   // Configuration:
   public Texture lightTexture;
+  public Sprite spriteTexture;
   public float xOffset;
   public float yOffset;
   public float directionShading = 1;
@@ -39,11 +40,24 @@ public class WallRenderer : MonoBehaviour
 #endif
     }
     block.Clear();
-    block.SetVector("_Tiling", new Vector4(transform.lossyScale.x, transform.lossyScale.y, xOffset, yOffset));
-    block.SetVector("_Light", new Vector4(directionShading, backWallOpacity, obscureWall ? 1 : 0, 0));
     if(lightTexture != null)
     {
+      block.SetVector("_Tiling", new Vector4(transform.lossyScale.x, transform.lossyScale.y,
+            xOffset, yOffset));
+      block.SetVector("_Light", new Vector4(directionShading, backWallOpacity, obscureWall ? 1 : 0,
+            0));
       block.SetTexture("_Tex", lightTexture);
+      renderer.enabled = true;
+    }
+    else if(spriteTexture != null)
+    {
+      block.SetVector("_Light", new Vector4(directionShading, backWallOpacity, obscureWall ? 1 : 0,
+            0));
+      block.SetTexture("_Tex", spriteTexture.texture);
+      Vector2 size = spriteTexture.texture.texelSize;
+      Rect part = spriteTexture.rect;
+      block.SetVector("_Tiling", new Vector4(size.x * part.width, size.y * part.height,
+            (size.x * part.x) + xOffset, (size.y * part.y) + yOffset));
       renderer.enabled = true;
     }
     else

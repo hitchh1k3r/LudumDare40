@@ -97,7 +97,19 @@ public class NavigationPlane : MonoBehaviour
   {
     if(plane.navigable && plane.Contains(pos.x, pos.z))
     {
-      return true;
+      bool noExcept = true;
+      foreach(Exception e in plane.exceptions)
+      {
+        if(!e.navigable && plane.ExceptionContains(e, pos.x, pos.z))
+        {
+          noExcept = false;
+          break;
+        }
+      }
+      if(noExcept)
+      {
+        return true;
+      }
     }
 
     NavigationPlane nPlane = null;
@@ -138,6 +150,7 @@ public class NavigationPlane : MonoBehaviour
     }
     else
     {
+      pos = nPlane.NearestPoint(pos);
       plane = nPlane;
       return true;
     }
@@ -163,6 +176,7 @@ public class NavigationPlane : MonoBehaviour
     {
       pos.z = zP + zH;
     }
+    pos = NearestExceptionPoint(pos);
     return pos;
   }
 
@@ -202,23 +216,60 @@ public class NavigationPlane : MonoBehaviour
 
   private Vector3 NearestExceptionPoint(Vector3 pos)
   {
-    float xH = 0.5f * xS;
-    float zH = 0.5f * zS;
-    if(pos.x < xP - xH)
+    // FIXME (hitch) 12-3-17 This method is NOT SUITABLE for intersecting or touching collision
+    //   areas. The itterative nature of the ejections could cause the player to be wedged between
+    //   the shapes!
+    foreach(Exception exception in exceptions)
     {
-      pos.x = xP - xH;
-    }
-    else if(pos.x > xP + xH)
-    {
-      pos.x = xP + xH;
-    }
-    if(pos.z < zP - zH)
-    {
-      pos.z = zP - zH;
-    }
-    else if(pos.z > zP + zH)
-    {
-      pos.z = zP + zH;
+      if(!exception.navigable && ExceptionContains(exception, pos.x, pos.z))
+      {
+        if(exception.shape == ExceptionShape.CIRCLE)
+        {
+          float deltaX = pos.x - exception.xP;
+          float deltaZ = pos.z - exception.zP;
+          float distance = Mathf.Sqrt(deltaX * deltaX + deltaZ * deltaZ);
+          pos.x = exception.xP + deltaX / (distance * exception.xS);
+          pos.z = exception.zP + deltaZ / (distance * exception.xS);
+        }
+        else if(exception.shape == ExceptionShape.RECT)
+        {
+          float xPos = (exception.xP + 0.5f * exception.xS) - pos.x;
+          float xNeg = pos.x - (exception.xP - 0.5f * exception.xS);
+          float zPos = (exception.zP + 0.5f * exception.zS) - pos.z;
+          float zNeg = pos.z - (exception.zP - 0.5f * exception.zS);
+          float min = Mathf.Min(xPos, xNeg, zPos, zNeg);
+          if(Mathf.Approximately(min, xPos))
+          {
+            pos.x = pos.x + xPos;
+          }
+          else if(Mathf.Approximately(min, xNeg))
+          {
+            pos.x = pos.x - xNeg;
+          }
+          else if(Mathf.Approximately(min, zPos))
+          {
+            pos.z = pos.z + zPos;
+          }
+          else if(Mathf.Approximately(min, zNeg))
+          {
+            pos.z = pos.z - zNeg;
+          }
+        }
+        else if(exception.shape == ExceptionShape.ROT_RECT)
+        {
+          // FIXME (hitch) 12-3-17 We will still need to implement ejection from rotated rectangles!
+          /* float sin = Mathf.Sin(exception.rot);
+          float cos = Mathf.Cos(exception.rot);
+          x -= exception.xP;
+          z -= exception.zP;
+          float nX = cos * x - sin * z;
+          float nZ = sin * x + cos * z;
+          x = nX + exception.xP;
+          z = nZ + exception.zP;
+          return (Mathf.Abs(x - exception.xP) < (0.5f * exception.xS) &&
+                Mathf.Abs(z - exception.zP) < (0.5f * exception.zS)); */
+        }
+      }
     }
     return pos;
   }

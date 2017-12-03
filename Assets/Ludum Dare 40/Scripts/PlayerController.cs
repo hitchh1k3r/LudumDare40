@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
   public float moveSpeed = 1.5f;
   public float spinSpeed = 640.0f;
   public string startingPlane = "PowerPlant";
+  public FourDirectionWalk animator;
 
   // Cache:
   private Transform cam;
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
   void Update()
   {
+    float speed = 0;
     if(!GameStateManager.IsMenu && GameStateManager.HasFocus)
     {
       Vector3 oldPos = transform.localPosition;
@@ -38,9 +40,11 @@ public class PlayerController : MonoBehaviour
             Input.GetAxis("Vertical"));
       if(moveVector.sqrMagnitude > 0.01f)
       {
-        if(moveVector.sqrMagnitude > 1)
+        speed = moveVector.magnitude;
+        if(speed > 1)
         {
-          moveVector.Normalize();
+          moveVector /= speed;
+          speed = 1;
         }
         Vector3 newPos = transform.localPosition + Time.deltaTime * moveSpeed * moveVector;
         NavigationPlane.ValidMove(ref newPos, ref navPlane);
@@ -50,6 +54,7 @@ public class PlayerController : MonoBehaviour
       transform.localRotation = Quaternion.RotateTowards(transform.localRotation, targetRotation,
             spinSpeed * Time.deltaTime);
     }
+    animator.speed = 10.0f * speed;
   }
 
 }

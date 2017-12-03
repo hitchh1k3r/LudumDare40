@@ -3,6 +3,9 @@
 public class InteractionTest : MonoBehaviour, IInteracatble
 {
 
+  // Configuration:
+  public Transform interactionPoint;
+
   // State:
   private bool didShow;
 
@@ -15,7 +18,7 @@ public class InteractionTest : MonoBehaviour, IInteracatble
 
   public Vector3 InteractIconPosition(InteractionType type, Interactor actor)
   {
-    return transform.position + new Vector3(0, 2, 0);
+    return interactionPoint.position;
   }
 
   public void Interact(InteractionType type, Interactor actor)
@@ -26,5 +29,16 @@ public class InteractionTest : MonoBehaviour, IInteracatble
       InterfaceManager.ShowFriendBay();
     }
   }
+
+#if UNITY_EDITOR
+  void OnDrawGizmosSelected()
+  {
+    if(interactionPoint != null)
+    {
+      Gizmos.color = Color.red;
+      Gizmos.DrawWireSphere(interactionPoint.position, 0.1f);
+    }
+  }
+#endif
 
 }

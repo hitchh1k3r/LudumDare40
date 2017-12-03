@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ffd6ba7e4f14449ab1e063e5eacc653, type: 3}
+  m_Name: player_holding
+  m_EditorClassIdentifier: 
+  downStill: {fileID: 0}
+  downFrame1: {fileID: 0}
+  downFrame2: {fileID: 0}
+  leftStill: {fileID: 0}
+  leftFrame1: {fileID: 0}
+  leftFrame2: {fileID: 0}
+  rightStill: {fileID: 0}
+  rightFrame1: {fileID: 0}
+  rightFrame2: {fileID: 0}
+  upStill: {fileID: 0}
+  upFrame1: {fileID: 0}
+  upFrame2: {fileID: 0}

@@ -35,8 +35,15 @@ public class CameraController : MonoBehaviour
       }
       transform.eulerAngles = new Vector3(pitch, yaw, roll);
     }
-    transform.position = Vector3.Lerp(transform.position, target.position + targetOffset,
-          HitchLib.Math.HalfLifeInterp(1.0f / camSpeed, Time.deltaTime));
+    if((target.position - transform.position).sqrMagnitude > 500.0f)
+    {
+      transform.position = target.position + targetOffset;
+    }
+    else
+    {
+      transform.position = Vector3.Lerp(transform.position, target.position + targetOffset,
+            HitchLib.Math.HalfLifeInterp(1.0f / camSpeed, Time.deltaTime));
+    }
   }
 
 }
