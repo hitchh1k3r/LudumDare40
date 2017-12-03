@@ -13,9 +13,13 @@ public class Interactor : MonoBehaviour
 public interface IInteracatble
 {
 
-  public InteractionType CanInteract(Interactor actor);
-  public void Interact(InteractionType type, Interactor actor);
+  InteractionType CanInteract(Interactor actor);
+  void Interact(InteractionType type, Interactor actor);
 
 }
 
-
+[System.Flags]
+public enum InteractionType
+{
+  GRAB
+}
