@@ -21,10 +21,10 @@ public class DoorSwish : MonoBehaviour
 
   void Awake()
   {
-    startAngle1 = door1.eulerAngles.y;
+    startAngle2 = door2.eulerAngles.y;
     if(location == DoorLocation.Store)
     {
-      startAngle2 = door2.eulerAngles.y;
+    startAngle1 = door1.eulerAngles.y;
       storeInstance = this;
     }
     else if(location == DoorLocation.Home)
@@ -57,8 +57,8 @@ public class DoorSwish : MonoBehaviour
     }
     else
     {
-      yield return HitchLib.Tweening.TransRotate(door1, Quaternion.Euler(0, startAngle1, 0),
-            Quaternion.Euler(0, 180, 0), 5.0f, HitchLib.Easing.EASE_ELASTIC_OUT);
+      yield return HitchLib.Tweening.TransRotate(door2, Quaternion.Euler(0, startAngle2, 0),
+            Quaternion.Euler(0, 0, 0), 5.0f, HitchLib.Easing.EASE_ELASTIC_OUT);
     }
   }
 

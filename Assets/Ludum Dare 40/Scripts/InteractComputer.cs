@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 
-public class InteractionTest : MonoBehaviour, IInteracatble
+public class InteractComputer : MonoBehaviour, IInteracatble
 {
 
   // Configuration:
   public Transform interactionPoint;
-
-  // State:
-  private bool didShow;
 
   // Interface IInteracatble:
 
@@ -23,11 +20,7 @@ public class InteractionTest : MonoBehaviour, IInteracatble
 
   public void Interact(InteractionType type, Interactor actor)
   {
-    if(!didShow)
-    {
-      didShow = true;
-      InterfaceManager.ShowFriendBay();
-    }
+    InterfaceManager.ShowFriendBay();
   }
 
 #if UNITY_EDITOR

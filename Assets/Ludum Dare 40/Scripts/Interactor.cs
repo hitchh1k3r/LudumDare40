@@ -12,6 +12,7 @@ public class Interactor : MonoBehaviour
   // Cache:
   private GameObject indicatorInventory;
   private IInteracatble targetInventory;
+  private InteractionAttachment attachInventory;
   private bool showingInventory;
 
   // State:
@@ -22,6 +23,8 @@ public class Interactor : MonoBehaviour
   void Awake()
   {
     indicatorInventory = Instantiate<GameObject>(prefabInventory);
+    attachInventory = indicatorInventory.GetComponent<InteractionAttachment>();
+    attachInventory.enabled = false;
     indicatorInventory.SetActive(false);
   }
 
@@ -64,6 +67,8 @@ public class Interactor : MonoBehaviour
         animateInventory = StartCoroutine(HitchLib.Tweening.EasyPopOut(
               indicatorInventory.transform, 0.25f, callbackEnding: () => {
                   indicatorInventory.SetActive(false);
+                  attachInventory.enabled = false;
+                  attachInventory.target = null;
                 }));
       }
       else
@@ -74,9 +79,16 @@ public class Interactor : MonoBehaviour
           {
             StopCoroutine(animateInventory);
           }
-          animateInventory = StartCoroutine(HitchLib.Tweening.TransTranslate(
-                indicatorInventory.transform, null, targetInventory.InteractIconPosition(
-                InteractionType.Inventory, this), 0.25f, HitchLib.Easing.EASE_CUBIC_IN_OUT));
+          Vector3 startPos = indicatorInventory.transform.position;
+          Transform target = targetInventory.InteractIconPosition(InteractionType.Inventory, this);
+          attachInventory.enabled = false;
+          attachInventory.target = target;
+          animateInventory = StartCoroutine(HitchLib.Tweening.Action((t) => {
+                  indicatorInventory.transform.position =
+                        Vector3.Lerp(startPos, target.position, t);
+                }, 0.25f, HitchLib.Easing.EASE_CUBIC_IN_OUT, callbackEnding: () => {
+                    attachInventory.enabled = true;
+                }));
         }
         else
         {
@@ -85,8 +97,9 @@ public class Interactor : MonoBehaviour
             StopCoroutine(animateInventory);
           }
           indicatorInventory.SetActive(true);
-          indicatorInventory.transform.position = targetInventory.InteractIconPosition(
-                InteractionType.Inventory, this);
+          attachInventory.enabled = true;
+          attachInventory.target = targetInventory.InteractIconPosition(InteractionType.Inventory,
+                this);
           animateInventory = StartCoroutine(HitchLib.Tweening.EasyPopIn(
                 indicatorInventory.transform, 0.5f, callbackEnding: () => {
                     showingInventory = true;
@@ -107,7 +120,7 @@ public interface IInteracatble
 {
 
   InteractionType CanInteract(Interactor actor);
-  Vector3 InteractIconPosition(InteractionType type, Interactor actor);
+  Transform InteractIconPosition(InteractionType type, Interactor actor);
   void Interact(InteractionType type, Interactor actor);
 
 }

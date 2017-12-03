@@ -57,4 +57,13 @@ public class PlayerController : MonoBehaviour
     animator.speed = 10.0f * speed;
   }
 
+  // Utilities:
+
+  public void Teleport(string plane, Vector3 pos)
+  {
+    pos.y = 0;
+    navPlane = NavigationPlane.FindPlane(plane);
+    transform.position = pos;
+  }
+
 }

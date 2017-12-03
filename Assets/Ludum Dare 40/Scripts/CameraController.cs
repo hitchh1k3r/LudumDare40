@@ -17,7 +17,15 @@ public class CameraController : MonoBehaviour
   [HitchLib.MinMaxAttribute(0, 90)]
   public Vector2 pitchLimits = new Vector2(10, 80);
 
+  // Static Instance:
+  private static CameraController instance;
+
   // Messages:
+
+  void Awake()
+  {
+    instance = this;
+  }
 
   void Update()
   {
@@ -44,6 +52,14 @@ public class CameraController : MonoBehaviour
       transform.position = Vector3.Lerp(transform.position, target.position + targetOffset,
             HitchLib.Math.HalfLifeInterp(1.0f / camSpeed, Time.deltaTime));
     }
+  }
+
+  // Utilities:
+
+  public static void SetAngle(float yaw, float pitch)
+  {
+    instance.pitch = pitch;
+    instance.yaw = yaw;
   }
 
 }

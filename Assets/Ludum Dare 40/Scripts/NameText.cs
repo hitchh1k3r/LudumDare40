@@ -8,7 +8,6 @@ public class NameText : MonoBehaviour
 
   // Cache:
   private TextMeshProUGUI text;
-  private int lastUserID = -1;
 
   // Messages:
 
@@ -20,15 +19,12 @@ public class NameText : MonoBehaviour
 
   void Update()
   {
-    if(lastUserID != LudumDareAPI.GetUserID())
+    string name = NameManager.GetMyName();
+    if(!string.IsNullOrEmpty(name))
     {
-      string name = LudumDareAPI.GetUsername();
-      if(!string.IsNullOrEmpty(name))
-      {
-        lastUserID = LudumDareAPI.GetUserID();
-        text.text = name;
-        text.enabled = true;
-      }
+      text.text = name;
+      text.enabled = true;
+      enabled = false;
     }
   }
 

@@ -46,14 +46,14 @@ public class WallRenderer : MonoBehaviour
             xOffset, yOffset));
       block.SetVector("_Light", new Vector4(directionShading, backWallOpacity, obscureWall ? 1 : 0,
             0));
-      block.SetTexture("_Tex", lightTexture);
+      block.SetTexture("_MainTex", lightTexture);
       renderer.enabled = true;
     }
     else if(spriteTexture != null)
     {
       block.SetVector("_Light", new Vector4(directionShading, backWallOpacity, obscureWall ? 1 : 0,
             0));
-      block.SetTexture("_Tex", spriteTexture.texture);
+      block.SetTexture("_MainTex", spriteTexture.texture);
       Vector2 size = spriteTexture.texture.texelSize;
       Rect part = spriteTexture.rect;
       block.SetVector("_Tiling", new Vector4(size.x * part.width, size.y * part.height,

@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class InteractionTest : MonoBehaviour, IInteracatble
+public class InteractionDoor : MonoBehaviour, IInteracatble
 {
 
   // Configuration:
   public Transform interactionPoint;
-
-  // State:
-  private bool didShow;
+  public string tpName;
+  public Transform teleportTo;
+  public DoorSwish.DoorLocation location;
 
   // Interface IInteracatble:
 
@@ -23,11 +23,9 @@ public class InteractionTest : MonoBehaviour, IInteracatble
 
   public void Interact(InteractionType type, Interactor actor)
   {
-    if(!didShow)
-    {
-      didShow = true;
-      InterfaceManager.ShowFriendBay();
-    }
+    DoorSwish.StartSwish(location);
+    CameraController.SetAngle(-30, 40);
+    actor.GetComponent<PlayerController>().Teleport(tpName, teleportTo.position);
   }
 
 #if UNITY_EDITOR

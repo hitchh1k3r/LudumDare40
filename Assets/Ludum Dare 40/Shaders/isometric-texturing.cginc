@@ -3,7 +3,7 @@
 #ifndef WHO_GOES_TEXTURE_INCLUDED
 #define WHO_GOES_TEXTURE_INCLUDED
 
-  sampler2D _Tex;
+  sampler2D _MainTex;
   fixed4    _Light;
 
   // Utilities:
@@ -78,7 +78,7 @@
 
   fixed4 BasicFrag(v2f i) : SV_Target
   {
-    fixed4 c = tex2D(_Tex, i.texcoord);
+    fixed4 c = tex2D(_MainTex, i.texcoord);
     c.rgb *= i.light;
 
     return c;

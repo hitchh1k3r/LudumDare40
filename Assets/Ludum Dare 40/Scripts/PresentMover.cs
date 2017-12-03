@@ -10,7 +10,8 @@ public class PresentMover : MonoBehaviour
   // Configuration:
   public Vector3 moveSpeed = new Vector3(1.0f, 0, 0);
   public float despawnX = -14.75f;
-  public float intervalSpawn = 3.0f;
+  public float spawnMin = 1.0f;
+  public float spawnMax = 4.0f;
 
   // State:
   private float spawnTimer;
@@ -20,10 +21,10 @@ public class PresentMover : MonoBehaviour
 
   void Update()
   {
-    spawnTimer += Time.deltaTime;
-    if(spawnTimer > intervalSpawn)
+    spawnTimer -= Time.deltaTime;
+    if(spawnTimer < 0)
     {
-      spawnTimer = 0;
+      spawnTimer = Random.Range(spawnMin, spawnMax);
       GameObject go = Instantiate<GameObject>(prefabPresent, transform);
       go.transform.position = transform.position;
       presents.Add(go.transform);
