@@ -6,7 +6,8 @@
       [
         ".gitignore",
         "*.sublime-project",
-        "IDEAS"
+        "IDEAS",
+        "LESSONS"
       ],
       "folder_exclude_patterns":
       [
