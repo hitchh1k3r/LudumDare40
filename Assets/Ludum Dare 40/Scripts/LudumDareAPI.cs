@@ -49,7 +49,6 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
 
   private IEnumerator DoLDLookup(string username, Action onFinished)
   {
-    Debug.Log("STARING!");
     WWWForm form = new WWWForm();
     form.AddField("username", username);
     WWW req = new WWW("https://hitchh1k3rsguide.com/api/ld.php", form);
@@ -76,7 +75,6 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
         }
       }
     }
-    Debug.Log("FINISHING!");
     onFinished();
   }
 

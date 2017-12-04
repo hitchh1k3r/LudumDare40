@@ -16,7 +16,14 @@ public class InteractionBed : MonoBehaviour, IInteracatble
 
   public InteractionType CanInteract(Interactor actor)
   {
-    return InteractionType.Inventory;
+    if(GameStateManager.State.currentYear > 1 || GameStateManager.State.currentMoney <= 0)
+    {
+      return InteractionType.Inventory;
+    }
+    else
+    {
+      return InteractionType.None;
+    }
   }
 
   public Transform InteractIconPosition(InteractionType type, Interactor actor)

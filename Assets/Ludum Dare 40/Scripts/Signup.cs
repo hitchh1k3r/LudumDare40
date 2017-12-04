@@ -46,7 +46,6 @@ public class Signup : MonoBehaviour
       if(ldName.text != "")
       {
         LudumDareAPI.SetUser(ldName.text, () => {
-                Debug.Log("CALLBACK!");
                 isProcessing = false;
                 if(LudumDareAPI.GetUserID() > 2)
                 {

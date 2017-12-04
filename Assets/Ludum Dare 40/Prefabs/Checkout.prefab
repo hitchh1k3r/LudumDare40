@@ -861,7 +861,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1665422343208982}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.452, y: 1.846, z: 0.5}
+  m_LocalPosition: {x: -0.452, y: 1.85, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4919710623246360}
@@ -975,7 +975,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1165226654102840}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1, y: 0, z: -3.5}
+  m_LocalPosition: {x: -4.99, y: 0, z: -3.5}
   m_LocalScale: {x: 1.0000005, y: 1, z: 1.0000005}
   m_Children:
   - {fileID: 4024510913170332}
@@ -1891,7 +1891,7 @@ MonoBehaviour:
   male_shirt: {fileID: 11400000, guid: d53589314b3be4e8aa199347deab0610, type: 2}
   female_shirt: {fileID: 11400000, guid: b58ee2617a5d7451e985d699dfa98fbe, type: 2}
   name: {fileID: 114274034310885526}
-  index: 2
+  index: 0
 --- !u!114 &114139714533772866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2603,7 +2603,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1732760867569330}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.75, z: -0}
+  m_LocalPosition: {x: 0, y: 2, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4211123013885880}
@@ -2611,6 +2611,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 2.75}
+  m_AnchoredPosition: {x: 0, y: 2}
   m_SizeDelta: {x: 2.25, y: 0.45}
   m_Pivot: {x: 0.5, y: 0.5}
