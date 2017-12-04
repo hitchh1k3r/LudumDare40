@@ -13,7 +13,14 @@ public class InteractionDoor : MonoBehaviour, IInteracatble
 
   public InteractionType CanInteract(Interactor actor)
   {
-    return InteractionType.Inventory;
+    if(GameStateManager.State.currentYear != 2 || GameStateManager.FriendRequests.Count <= 0)
+    {
+      return InteractionType.Inventory;
+    }
+    else
+    {
+      return InteractionType.None;
+    }
   }
 
   public Transform InteractIconPosition(InteractionType type, Interactor actor)
