@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Interactor : MonoBehaviour
+public class Interactor : MonoBehaviour, IInventory
 {
 
   // Configuration:
   public float range;
   public GameObject prefabInventory;
   public LayerMask layerInteration;
+  public Transform itemMount;
+  public PlayerController player;
 
   // Cache:
   private GameObject indicatorInventory;
@@ -17,6 +19,7 @@ public class Interactor : MonoBehaviour
 
   // State:
   private Coroutine animateInventory;
+  private Transform itemHeld;
 
   // Messages:
 
@@ -31,6 +34,7 @@ public class Interactor : MonoBehaviour
   void Update()
   {
     float distanceInventory = float.PositiveInfinity;
+    Plane forwardPlane = new Plane(transform.forward, transform.position);
     IInteracatble nearestInventory = null;
     Collider[] objects = Physics.OverlapSphere(transform.position, range, layerInteration);
     foreach(Collider obj in objects)
@@ -39,7 +43,7 @@ public class Interactor : MonoBehaviour
       foreach(IInteracatble inter in interacables)
       {
         InteractionType valid = inter.CanInteract(this);
-        if(valid != InteractionType.None)
+        if(valid != InteractionType.None && forwardPlane.GetSide(obj.transform.position))
         {
           if((valid & InteractionType.Inventory) == InteractionType.Inventory)
           {
@@ -114,6 +118,29 @@ public class Interactor : MonoBehaviour
     }
   }
 
+  // Interface IInventory:
+
+  public void AddItem(Transform item)
+  {
+    player.SetHolding(true);
+    itemHeld = item;
+    itemHeld.SetParent(itemMount, false);
+    itemHeld.localPosition = Vector3.zero;
+  }
+
+  public void RemoveItem(Transform item)
+  {
+    player.SetHolding(false);
+    itemHeld = null;
+  }
+
+  // Utilities:
+
+  public Transform GetItem()
+  {
+    return itemHeld;
+  }
+
 }
 
 public interface IInteracatble
@@ -122,6 +149,14 @@ public interface IInteracatble
   InteractionType CanInteract(Interactor actor);
   Transform InteractIconPosition(InteractionType type, Interactor actor);
   void Interact(InteractionType type, Interactor actor);
+
+}
+
+public interface IInventory
+{
+
+  void AddItem(Transform item);
+  void RemoveItem(Transform item);
 
 }
 

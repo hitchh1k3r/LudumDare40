@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 public class GameStateManager : HitchLib.Singleton // MonoBehaviour
 {
 
   // Public State:
   public bool isMenu;
+  public List<PresentData> presents;
 
   // Statis Accessors:
 
@@ -27,6 +30,14 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
 
   public static bool HasFocus {
     get { return instance.isMenu || Cursor.lockState == CursorLockMode.Locked; }
+  }
+
+  public static int PresentCount {
+    get { return instance.presents.Count; }
+  }
+
+  public static List<PresentData> Presents {
+    get { return instance.presents; }
   }
 
   // Static Instance:
@@ -64,5 +75,14 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
   {
     instance = gameObject.GetComponent<GameStateManager>();
   }
+
+}
+
+[Serializable]
+public struct PresentData
+{
+
+  public HitchLib.ColorEnum color;
+  public int price;
 
 }

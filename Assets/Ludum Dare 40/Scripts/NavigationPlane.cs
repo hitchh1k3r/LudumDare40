@@ -228,8 +228,8 @@ public class NavigationPlane : MonoBehaviour
           float deltaX = pos.x - exception.xP;
           float deltaZ = pos.z - exception.zP;
           float distance = Mathf.Sqrt(deltaX * deltaX + deltaZ * deltaZ);
-          pos.x = exception.xP + deltaX / (distance * exception.xS);
-          pos.z = exception.zP + deltaZ / (distance * exception.xS);
+          pos.x = exception.xP + deltaX / distance * exception.xS;
+          pos.z = exception.zP + deltaZ / distance * exception.xS;
         }
         else if(exception.shape == ExceptionShape.RECT)
         {

@@ -5,6 +5,7 @@ public class InteractionPickup : MonoBehaviour, IInteracatble
 
   // Configuration:
   public Transform interactionPoint;
+  public IInventory mount;
 
   // Interface IInteracatble:
 
@@ -20,6 +21,18 @@ public class InteractionPickup : MonoBehaviour, IInteracatble
 
   public void Interact(InteractionType type, Interactor actor)
   {
+    Transform item = actor.GetItem();
+    IInventory prevMount = mount;
+    if(mount != null)
+    {
+      mount.RemoveItem(transform);
+    }
+    mount = null;
+    actor.AddItem(transform);
+    if(item != null && prevMount != null)
+    {
+      prevMount.AddItem(item);
+    }
   }
 
 #if UNITY_EDITOR

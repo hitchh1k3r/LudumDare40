@@ -11,21 +11,35 @@ public class PlayerController : MonoBehaviour
   public float spinSpeed = 640.0f;
   public string startingPlane = "PowerPlant";
   public FourDirectionWalk animator;
+  public WalkingAnimation animationNormal;
+  public WalkingAnimation animationHolding;
+  public Transform positionInteraction;
 
   // Cache:
   private Transform cam;
+  private float offsetYInteraction;
 
   // State:
   private NavigationPlane navPlane;
   private Quaternion targetRotation = Quaternion.identity;
 
+  // Lazy Accessor:
+  private static PlayerController instance;
+  public static PlayerController Get {
+    get { return instance; }
+  }
+
   // Messages:
+
+  void Awake()
+  {
+    instance = this;
+    offsetYInteraction = positionInteraction.localPosition.y;
+  }
 
   void Start()
   {
     cam = Camera.main.transform;
-    // cam.GetComponentInParent<CameraController>().trackingTarget = transform;
-    // Interactable.SetPlayer(transform);
     navPlane = NavigationPlane.FindPlane(startingPlane);
   }
 
@@ -55,9 +69,24 @@ public class PlayerController : MonoBehaviour
             spinSpeed * Time.deltaTime);
     }
     animator.speed = 10.0f * speed;
+    Vector3 pos = positionInteraction.localPosition;
+    pos.y = offsetYInteraction * (1.0f / cam.up.y);
+    positionInteraction.localPosition = pos;
   }
 
   // Utilities:
+
+  public void SetHolding(bool isHolding)
+  {
+    if(isHolding)
+    {
+      animator.animation = animationHolding;
+    }
+    else
+    {
+      animator.animation = animationNormal;
+    }
+  }
 
   public void Teleport(string plane, Vector3 pos)
   {
