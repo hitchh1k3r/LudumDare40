@@ -26,6 +26,15 @@ public class InteractionDoor : MonoBehaviour, IInteracatble
     DoorSwish.StartSwish(location);
     CameraController.SetAngle(-30, 40);
     actor.GetComponent<PlayerController>().Teleport(tpName, teleportTo.position, Vector3.zero);
+    if(location == DoorSwish.DoorLocation.Store)
+    {
+      PresentMover.On();
+      GameStateManager.TryAddingCachiers();
+    }
+    else
+    {
+      PresentMover.Off();
+    }
   }
 
 #if UNITY_EDITOR

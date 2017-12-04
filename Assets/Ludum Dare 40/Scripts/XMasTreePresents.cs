@@ -10,7 +10,7 @@ public class XMasTreePresents : MonoBehaviour
   public NavigationPlane plane;
 
   // State:
-  private int lastCount;
+  private int lastCount = -1;
 
   // Messages:
 

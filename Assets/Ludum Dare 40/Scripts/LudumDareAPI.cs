@@ -16,13 +16,13 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
 
   // Static Utilities:
 
-  public static void SetUser(string username)
+  public static void SetUser(string username, Action onFinished)
   {
     if(instance.apiRequest != null)
     {
       instance.StopCoroutine(instance.apiRequest);
     }
-    instance.apiRequest = instance.StartCoroutine(instance.DoLDLookup(username));
+    instance.apiRequest = instance.StartCoroutine(instance.DoLDLookup(username, onFinished));
   }
 
   public static bool Ready()
@@ -47,8 +47,9 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
 
   // Private Utilities:
 
-  private IEnumerator DoLDLookup(string username)
+  private IEnumerator DoLDLookup(string username, Action onFinished)
   {
+    Debug.Log("STARING!");
     WWWForm form = new WWWForm();
     form.AddField("username", username);
     WWW req = new WWW("https://hitchh1k3rsguide.com/api/ld.php", form);
@@ -75,6 +76,8 @@ public class LudumDareAPI : HitchLib.Singleton // MonoBehaviour
         }
       }
     }
+    Debug.Log("FINISHING!");
+    onFinished();
   }
 
   // JSON Objects:

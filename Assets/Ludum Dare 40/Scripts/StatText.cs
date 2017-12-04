@@ -16,7 +16,7 @@ public class StatText : MonoBehaviour
           "<align=right>" + GameStateManager.FriendCount + "</align>\n" +
           "\n" +
           "Friend Requests:\n" +
-          "<align=right>3</align>\n" +
+          "<align=right>" + GameStateManager.FriendRequests.Count + "</align>\n" +
           "\n" +
           "Money:\n" +
           "<align=right>$" + GameStateManager.State.currentMoney + "</align>\n" +

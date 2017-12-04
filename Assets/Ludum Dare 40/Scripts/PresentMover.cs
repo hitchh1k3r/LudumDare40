@@ -6,7 +6,6 @@ public class PresentMover : MonoBehaviour, IInteracatble, IInventory
 
   // Referances:
   public GameObject prefabPresent;
-  public HitchLib.ColorEnum[] presentColors;
   public Transform positionSpawn;
   public Transform positionInteraction;
 
@@ -20,7 +19,16 @@ public class PresentMover : MonoBehaviour, IInteracatble, IInventory
   private float spawnTimer;
   private readonly List<Transform> presents = new List<Transform>();
 
+  // Lazy:
+  private static PresentMover instance;
+
   // Messages:
+
+  void Awake()
+  {
+    instance = this;
+    enabled = false;
+  }
 
   void Update()
   {
@@ -32,6 +40,7 @@ public class PresentMover : MonoBehaviour, IInteracatble, IInventory
     {
       spawnTimer = Random.Range(spawnMin, spawnMax);
       GameObject go = Instantiate<GameObject>(prefabPresent, transform);
+      HitchLib.ColorEnum[] presentColors = GameStateManager.PresentColors;
       go.GetComponent<Present>().color = presentColors[Random.Range(0, presentColors.Length)];
       go.GetComponent<InteractionPickup>().mount = this;
       go.transform.position = positionSpawn.position;
@@ -62,6 +71,24 @@ public class PresentMover : MonoBehaviour, IInteracatble, IInventory
       presents.Remove(r);
     }
 
+  }
+
+  // Utilities:
+
+  public static void On()
+  {
+    instance.enabled = true;
+    GameStateManager.GeneratePresentColors();
+  }
+
+  public static void Off()
+  {
+    instance.enabled = false;
+    foreach(Transform present in instance.presents)
+    {
+      Destroy(present.gameObject);
+    }
+    instance.presents.Clear();
   }
 
   // Interface IInteracatble:

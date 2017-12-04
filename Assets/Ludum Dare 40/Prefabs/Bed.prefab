@@ -29,6 +29,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1340522447491048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4821144761759556}
+  m_Layer: 0
+  m_Name: INTERACTION POINT
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1411342387544664
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4817729995375492}
   - component: {fileID: 65940436929496136}
+  - component: {fileID: 114295028671869526}
   m_Layer: 8
   m_Name: Bed
   m_TagString: Untagged
@@ -158,8 +174,22 @@ Transform:
   - {fileID: 4548005450618478}
   - {fileID: 4970617668330414}
   - {fileID: 4984924313096602}
+  - {fileID: 4821144761759556}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4821144761759556
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1340522447491048}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 1.5, z: -0.5}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4817729995375492}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4938489843800808
 Transform:
@@ -415,8 +445,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.5, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 2}
+  m_Center: {x: 0, y: 0, z: -0.5}
 --- !u!114 &114095688002732484
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -489,6 +519,21 @@ MonoBehaviour:
   directionShading: 0.5
   backWallOpacity: 0.5
   obscureWall: 0
+--- !u!114 &114295028671869526
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1700669883134182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f60d3860f0844cc49b31f7881549ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPoint: {fileID: 4821144761759556}
+  fade: {fileID: 0}
+  text: {fileID: 0}
+  yearText: {fileID: 0}
 --- !u!114 &114753425752761528
 MonoBehaviour:
   m_ObjectHideFlags: 1

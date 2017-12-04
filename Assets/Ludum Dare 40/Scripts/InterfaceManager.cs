@@ -59,6 +59,10 @@ public class InterfaceManager : MonoBehaviour
 
   public static void ShowFriendBay()
   {
+    if(instance.menu == CurrentMenu.Login)
+    {
+      instance.login.gameObject.SetActive(false);
+    }
     GameStateManager.IsMenu = true;
     instance.friendBay.gameObject.SetActive(true);
     instance.menu = CurrentMenu.FriendBay;
@@ -68,6 +72,10 @@ public class InterfaceManager : MonoBehaviour
 
   public static void ShowLogin()
   {
+    if(instance.menu == CurrentMenu.FriendBay)
+    {
+      instance.friendBay.gameObject.SetActive(false);
+    }
     GameStateManager.IsMenu = true;
     instance.login.gameObject.SetActive(true);
     instance.menu = CurrentMenu.Login;

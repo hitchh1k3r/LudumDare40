@@ -10,7 +10,10 @@ public class FadeIn : MonoBehaviour
 
   IEnumerator Start()
   {
-    GameStateManager.LoadGame();
+    if(!GameStateManager.LoadGame())
+    {
+      InterfaceManager.ShowLogin();
+    }
 #if UNITY_WEBGL
     yield return new WaitForSeconds(1.0f);
 #endif

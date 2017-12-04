@@ -12,6 +12,12 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
   public StatCollector stats;
   public List<PresentData> presents;
   public List<FriendData> friends;
+  public List<FriendData> pendingRequests;
+  public List<FriendData> friendsToBuy;
+  public List<FriendData> friendsToQueue;
+  public List<FriendData> friendsBought;
+  public HitchLib.ColorEnum[] colorList;
+  public HitchLib.ColorEnum[] presentColors;
 
   // Static Accessors:
 
@@ -36,6 +42,10 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
     get { return instance.isMenu || Cursor.lockState == CursorLockMode.Locked; }
   }
 
+  public static HitchLib.ColorEnum[] PresentColors {
+    get { return instance.presentColors; }
+  }
+
   public static CurrentState State {
     get { return instance.state; }
   }
@@ -58,6 +68,22 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
 
   public static List<FriendData> Friend {
     get { return instance.friends; }
+  }
+
+  public static List<FriendData> FriendRequests {
+    get { return instance.pendingRequests; }
+  }
+
+  public static List<FriendData> FriendToBuy {
+    get { return instance.friendsToBuy; }
+  }
+
+  public static List<FriendData> FriendBought {
+    get { return instance.friendsBought; }
+  }
+
+  public static List<FriendData> FriendQueue {
+    get { return instance.friendsToQueue; }
   }
 
   // Static Instance:
@@ -106,6 +132,95 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
 
   // Utilities:
 
+  public static void NewYear()
+  {
+    instance.pendingRequests.Clear();
+    for(int i = 0; i < 2; ++i)
+    {
+      instance.pendingRequests.Add(GenerateFriend());
+    }
+
+    // FRIEND LOST!
+
+    // GET PRESENTS FROM FRIENDS
+
+    // NEW UPGRADES
+
+    // CALCULATE SUPERLATIVES (IN THE COLLECTOR, FOR HS SYSTEM)
+
+    PrepareFriends();
+    SaveGame();
+  }
+
+  public static void PrepareFriends()
+  {
+    instance.friendsBought.Clear();
+    instance.friendsToBuy.Clear();
+    instance.friendsToQueue.Clear();
+    foreach(FriendData friend in instance.friends)
+    {
+      if(friend.happyTarget < 0)
+      {
+        friend.happyTarget = 0;
+      }
+      if(friend.happyTarget > 1)
+      {
+        friend.happyTarget = 1;
+      }
+      friend.happyPrecentLastYear = friend.happyPrecent;
+      friend.happyPrecent = friend.happyTarget;
+      instance.friendsToBuy.Add(friend);
+      instance.friendsToQueue.Add(friend);
+    }
+    TryAddingCachiers();
+  }
+
+  public static void TryAddingCachiers()
+  {
+    for(int i = 0; i < InteractionCheckout.instances.Length; ++i)
+    {
+      if(InteractionCheckout.instances[i].isActiveAndEnabled &&
+            InteractionCheckout.instances[i].friend == null)
+      {
+        if(instance.friendsToQueue.Count > 0)
+        {
+          InteractionCheckout.instances[i].SetFriend(instance.friendsToQueue[
+                UnityEngine.Random.Range(0, instance.friendsToQueue.Count)]);
+        }
+        else
+        {
+          InteractionCheckout.instances[i].SetFriend(null);
+        }
+      }
+    }
+  }
+
+  public static void GeneratePresentColors()
+  {
+    List<HitchLib.ColorEnum> list = new List<HitchLib.ColorEnum>();
+    foreach(FriendData friend in instance.friends)
+    {
+      if(!list.Contains(friend.color))
+      {
+        list.Add(friend.color);
+      }
+    }
+    instance.presentColors = list.ToArray();
+  }
+
+  public static FriendData GenerateFriend()
+  {
+    FriendData friend = new FriendData();
+    friend.isFemale = (UnityEngine.Random.Range(0, 2) == 0);
+    friend.name = NameManager.GetName(friend.isFemale);
+    friend.color = instance.colorList[UnityEngine.Random.Range(0,
+          Math.Min(instance.state.currentYear, instance.colorList.Length))];
+    friend.happyPrecent = 0.5f;
+    friend.happyPrecentLastYear = 0.5f;
+    friend.happyTarget = 0.5f;
+    return friend;
+  }
+
   public static void ResetGame()
   {
     instance.DoResetGame();
@@ -131,6 +246,7 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
     data.stats = stats;
     data.presents = presents;
     data.friends = friends;
+    data.friendRequests = pendingRequests.Count;
     PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
   }
 
@@ -142,6 +258,8 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
   [HitchLib.Invokable]
   private bool DoLoadGame()
   {
+    bool loaded = false;
+    int fReq = 3;
     if(PlayerPrefs.HasKey("SaveData"))
     {
       SaveData data = JsonUtility.FromJson<SaveData>(PlayerPrefs.GetString("SaveData"));
@@ -149,15 +267,22 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
       stats = data.stats;
       presents = data.presents;
       friends = data.friends;
-      return true;
+      fReq = data.friendRequests;
+      loaded = true;
     }
-    return false;
+    pendingRequests.Clear();
+    for(int i = 0; i < fReq; ++i)
+    {
+      pendingRequests.Add(GenerateFriend());
+    }
+    PrepareFriends();
+    return loaded;
   }
 
 }
 
 [Serializable]
-public struct CurrentState
+public class CurrentState
 {
 
   public int currentYear;
@@ -173,6 +298,7 @@ public struct SaveData
   public StatCollector stats;
   public List<PresentData> presents;
   public List<FriendData> friends;
+  public int friendRequests;
 
 }
 
@@ -182,11 +308,12 @@ public struct PresentData
 
   public HitchLib.ColorEnum color;
   public int price;
+  public string friend;
 
 }
 
 [Serializable]
-public struct FriendData
+public class FriendData
 {
 
   public string name;
@@ -197,11 +324,26 @@ public struct FriendData
   public int moneySpentOnPlayer;
   public int numberGiftsFromPlayer;
   public int numberGiftsToPlayer;
+  public float happyPrecent;
+  public float happyPrecentLastYear;
+  public float happyTarget;
+
+  public void GivePresent(Transform item)
+  {
+    GameStateManager.FriendToBuy.Remove(this);
+    GameStateManager.FriendBought.Add(this);
+    Present present = item.GetComponent<Present>();
+    happyTarget += 0.1f;
+    if(present == null || present.color == color)
+    {
+      happyTarget += 0.4f;
+    }
+  }
 
 }
 
 [Serializable]
-public struct StatCollector
+public class StatCollector
 {
 
   public int longestFriendshipYears;

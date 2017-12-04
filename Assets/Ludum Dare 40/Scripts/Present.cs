@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using TMPro;
 
 public class Present : MonoBehaviour
 {
@@ -7,11 +8,14 @@ public class Present : MonoBehaviour
   public HitchLib.ColorEnum color;
   public SpriteRenderer box;
   public SpriteRenderer ribbon;
+  public TextMeshPro text;
+  public int price;
 
   // Messages:
 
   void OnEnable()
   {
+    text.text = "$" + price;
     Color pColor = HitchLib.Colors.FromEnum(color);
     float H, S, V;
     Color.RGBToHSV(pColor, out H, out S, out V);

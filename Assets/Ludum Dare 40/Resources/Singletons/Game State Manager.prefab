@@ -54,7 +54,7 @@ MonoBehaviour:
   isMenu: 0
   state:
     currentYear: 1
-    currentMoney: 3
+    currentMoney: 0
   stats:
     longestFriendshipYears: 0
     longestFriendshipName: 
@@ -71,6 +71,46 @@ MonoBehaviour:
     numberFriendRequestsAccepted: 0
     numberFriendsLost: 0
   presents:
-  - color: 9
-    price: 1
+  - color: 113
+    price: 3
+    friend: Santa C.
   friends: []
+  pendingRequests:
+  - name: Pablo N.
+    isFemale: 0
+    color: 11
+    friendedOnYear: 0
+    moneySpentOnFriend: 0
+    moneySpentOnPlayer: 0
+    numberGiftsFromPlayer: 0
+    numberGiftsToPlayer: 0
+    happyPrecent: 0.5
+    happyPrecentLastYear: 0.5
+    happyTarget: 0
+  - name: Sarah U.
+    isFemale: 1
+    color: 20
+    friendedOnYear: 0
+    moneySpentOnFriend: 0
+    moneySpentOnPlayer: 0
+    numberGiftsFromPlayer: 0
+    numberGiftsToPlayer: 0
+    happyPrecent: 0.5
+    happyPrecentLastYear: 0.5
+    happyTarget: 0
+  - name: Tom A.
+    isFemale: 0
+    color: 22
+    friendedOnYear: 0
+    moneySpentOnFriend: 0
+    moneySpentOnPlayer: 0
+    numberGiftsFromPlayer: 0
+    numberGiftsToPlayer: 0
+    happyPrecent: 0.5
+    happyPrecentLastYear: 0.5
+    happyTarget: 0
+  friendsToBuy: []
+  friendsToQueue: []
+  friendsBought: []
+  colorList: 710000003300000009000000
+  presentColors: 
