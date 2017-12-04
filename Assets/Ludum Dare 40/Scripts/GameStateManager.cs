@@ -143,20 +143,19 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
     // FRIEND LOST!
 
     // GET PRESENTS FROM FRIENDS
+    foreach(FriendData friend in instance.friends)
+    {
+      PresentData present;
+      present.color = friend.color;
+      present.price = 1;
+      present.friend = friend.name;
+      instance.presents.Add(present);
+    }
 
     // NEW UPGRADES
 
     // CALCULATE SUPERLATIVES (IN THE COLLECTOR, FOR HS SYSTEM)
 
-    PrepareFriends();
-    SaveGame();
-  }
-
-  public static void PrepareFriends()
-  {
-    instance.friendsBought.Clear();
-    instance.friendsToBuy.Clear();
-    instance.friendsToQueue.Clear();
     foreach(FriendData friend in instance.friends)
     {
       if(friend.happyTarget < 0)
@@ -169,6 +168,20 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
       }
       friend.happyPrecentLastYear = friend.happyPrecent;
       friend.happyPrecent = friend.happyTarget;
+      instance.friendsToBuy.Add(friend);
+      instance.friendsToQueue.Add(friend);
+    }
+    PrepareFriends();
+    SaveGame();
+  }
+
+  public static void PrepareFriends()
+  {
+    instance.friendsBought.Clear();
+    instance.friendsToBuy.Clear();
+    instance.friendsToQueue.Clear();
+    foreach(FriendData friend in instance.friends)
+    {
       instance.friendsToBuy.Add(friend);
       instance.friendsToQueue.Add(friend);
     }
