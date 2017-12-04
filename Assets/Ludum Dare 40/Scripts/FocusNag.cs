@@ -7,6 +7,7 @@ public class FocusNag : MonoBehaviour
 
   // Referance:
   public GameObject quitPrompt;
+  public CanvasGroup fadeOut;
 
   // Cache:
   private CanvasGroup group;
@@ -14,6 +15,7 @@ public class FocusNag : MonoBehaviour
   // State:
   private bool focusTracker;
   private Coroutine animation;
+  private float resetTimer;
 
   // Messages:
 
@@ -43,15 +45,31 @@ public class FocusNag : MonoBehaviour
         animation = StartCoroutine(HitchLib.Tweening.EasyUIShow(group, 0.25f));
       }
     }
-#if !UNITY_WEBGL
     if(!focusTracker)
     {
+      if(Input.GetButton("Reset"))
+      {
+        if(resetTimer < 1)
+        {
+          resetTimer += 0.2f * Time.deltaTime;
+          if(resetTimer >= 1)
+          {
+            GameStateManager.ResetGame();
+          }
+        }
+      }
+      else
+      {
+        resetTimer = 0;
+      }
+      fadeOut.alpha = resetTimer;
+#if !UNITY_WEBGL
       if(Input.GetButtonDown("Quit"))
       {
         Application.Quit();
       }
-    }
 #endif
+    }
   }
 
 }

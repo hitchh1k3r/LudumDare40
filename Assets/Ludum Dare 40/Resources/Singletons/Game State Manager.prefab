@@ -52,6 +52,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMenu: 0
+  state:
+    currentYear: 1
+    currentMoney: 3
+  stats:
+    longestFriendshipYears: 0
+    longestFriendshipName: 
+    happiestFriendScore: 0
+    happiestFriendName: 
+    angriestFriendScore: 0
+    angriestFriendName: 
+    maxConcurrentFriends: 0
+    moneySpent: 0
+    moneyEarned: 0
+    moneyGiftedAway: 0
+    numberGiftsPurchased: 0
+    numberLavaLampsPurchased: 0
+    numberFriendRequestsAccepted: 0
+    numberFriendsLost: 0
   presents:
   - color: 9
     price: 1
+  friends: []

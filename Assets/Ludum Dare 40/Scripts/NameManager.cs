@@ -8,6 +8,8 @@ public class NameManager : HitchLib.Singleton // MonoBehaviour
   public TextAsset femaleNames;
 
   // State:
+  private string[] female;
+  private string[] male;
   private string[] names;
   private string myFirstName;
   private string myLastInitial;
@@ -18,23 +20,23 @@ public class NameManager : HitchLib.Singleton // MonoBehaviour
 
   void Awake()
   {
-    string[] males = maleNames.text.Split(new[]{'\n'},
+    male = maleNames.text.Split(new[]{'\n'},
           System.StringSplitOptions.RemoveEmptyEntries);
-    string[] females = femaleNames.text.Split(new[]{'\n'},
+    female = femaleNames.text.Split(new[]{'\n'},
           System.StringSplitOptions.RemoveEmptyEntries);
-    names = new string[males.Length + females.Length];
+    names = new string[male.Length + female.Length];
     int m = 0;
     int f = 0;
     for(int i = 0; i < names.Length; ++i)
     {
-      if(((float)m / males.Length) < ((float)f / females.Length))
+      if(((float)m / male.Length) < ((float)f / female.Length))
       {
-        names[i] = males[m];
+        names[i] = male[m];
         ++m;
       }
       else
       {
-        names[i] = females[f];
+        names[i] = female[f];
         ++f;
       }
     }
@@ -52,12 +54,20 @@ public class NameManager : HitchLib.Singleton // MonoBehaviour
     return instance.myFirstName + " " + instance.myLastInitial;
   }
 
-  public static string GetName()
+  public static string GetName(bool isFemale)
   {
-    // size * (normal * normal) = lower numbers are exponentially more likely!
-    int weightedIndex = (int)(instance.names.Length * (Random.Range(0.0f, 1.0f) *
-          Random.Range(0.0f, 1.0f)));
-    return instance.names[weightedIndex] + " " + (char)('A' + Random.Range(0, ('Z'-'A'))) + ".";
+    if(isFemale)
+    {
+      int weightedIndex = (int)(instance.female.Length * (Random.Range(0.0f, 1.0f) *
+            Random.Range(0.0f, 1.0f)));
+      return instance.female[weightedIndex] + " " + (char)('A' + Random.Range(0, ('Z'-'A'))) + ".";
+    }
+    else
+    {
+      int weightedIndex = (int)(instance.male.Length * (Random.Range(0.0f, 1.0f) *
+            Random.Range(0.0f, 1.0f)));
+      return instance.male[weightedIndex] + " " + (char)('A' + Random.Range(0, ('Z'-'A'))) + ".";
+    }
   }
 
   // Interface HitchLib.Singleton < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <

@@ -10,8 +10,8 @@ public class FriendRequest : MonoBehaviour
   // Messages:
   void OnEnable()
   {
-    requestText.text = "<b>" + NameManager.GetName() + "</b> <color=#777>(<i>Friend of <b>" +
-          NameManager.GetName() + "</b></i>)</color>";
+    requestText.text = "<b>" + NameManager.GetName(true) + "</b> <color=#777>(<i>Friend of <b>" +
+          NameManager.GetName(false) + "</b></i>)</color>";
     requestText.autoSizeTextContainer = false;
   }
 

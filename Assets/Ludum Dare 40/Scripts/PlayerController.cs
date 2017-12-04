@@ -88,11 +88,15 @@ public class PlayerController : MonoBehaviour
     }
   }
 
-  public void Teleport(string plane, Vector3 pos)
+  public void Teleport(string plane, Vector3 pos, Vector3? rotation)
   {
+    Vector3 rot = rotation ?? transform.eulerAngles;
     pos.y = 0;
     navPlane = NavigationPlane.FindPlane(plane);
+    NavigationPlane.ValidMove(ref pos, ref navPlane);
     transform.position = pos;
+    transform.eulerAngles = rot;
+    targetRotation = transform.rotation;
   }
 
 }

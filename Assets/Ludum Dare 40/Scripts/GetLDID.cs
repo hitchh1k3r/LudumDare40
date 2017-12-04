@@ -13,7 +13,7 @@ public class GetLDID : MonoBehaviour
 
   void Awake()
   {
-    string[] name = NameManager.GetName().Split(' ');
+    string[] name = NameManager.GetName(Random.Range(0, 1) == 0).Split(' ');
     firstName.text = name[0];
     lastName.text = name[1];
   }

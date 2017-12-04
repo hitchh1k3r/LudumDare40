@@ -10,7 +10,10 @@ public class FadeIn : MonoBehaviour
 
   IEnumerator Start()
   {
+    GameStateManager.LoadGame();
+#if UNITY_WEBGL
     yield return new WaitForSeconds(1.0f);
+#endif
     yield return HitchLib.Tweening.EasyUIHide(group);
     Destroy(gameObject);
   }

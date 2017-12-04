@@ -25,7 +25,7 @@ public class InteractionDoor : MonoBehaviour, IInteracatble
   {
     DoorSwish.StartSwish(location);
     CameraController.SetAngle(-30, 40);
-    actor.GetComponent<PlayerController>().Teleport(tpName, teleportTo.position);
+    actor.GetComponent<PlayerController>().Teleport(tpName, teleportTo.position, Vector3.zero);
   }
 
 #if UNITY_EDITOR
