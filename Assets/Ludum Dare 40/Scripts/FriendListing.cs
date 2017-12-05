@@ -9,6 +9,7 @@ public class FriendListing : MonoBehaviour
   // Referances:
   public FriendData friend;
   public TextMeshProUGUI friendName;
+  public GameObject happiness;
   public RectTransform happyBar;
   public RectTransform happyBarChange;
   public TextMeshProUGUI statLine;
@@ -36,6 +37,15 @@ public class FriendListing : MonoBehaviour
     else
     {
       happyBarChange.GetComponent<Graphic>().color = Color.green;
+    }
+    happiness.SetActive(GameStateManager.State.currentGameUpgrade > 0);
+  }
+
+  void Update()
+  {
+    if(!happiness.activeSelf && GameStateManager.State.currentGameUpgrade > 0)
+    {
+      happiness.SetActive(true);
     }
   }
 

@@ -44,6 +44,14 @@ public class NameManager : HitchLib.Singleton // MonoBehaviour
 
   public static void SetMyName(string first, string last)
   {
+    if(string.IsNullOrEmpty(first))
+    {
+      first = "Broken";
+    }
+    if(string.IsNullOrEmpty(last))
+    {
+      last = "McBrokenface";
+    }
     instance.myFirstName = first;
     instance.myLastName = last;
     instance.myLastInitial = (last[0] + ".").ToUpper();

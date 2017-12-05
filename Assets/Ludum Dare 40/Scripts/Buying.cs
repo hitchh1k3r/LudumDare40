@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class Buying : MonoBehaviour
 {
@@ -10,10 +11,14 @@ public class Buying : MonoBehaviour
   public TextMeshProUGUI up1Text;
   public GameObject up2;
   public TextMeshProUGUI up2Text;
+  public GameObject lavaLamp;
+  public CanvasGroup endingFade;
+  public CanvasGroup endingText;
 
   // Cache:
   private Upgrades last1 = Upgrades.NONE;
   private Upgrades last2 = Upgrades.NONE;
+  private Interactor playerActor;
 
   // Static:
   public static Upgrades upgrade1 = Upgrades.LAVA_LAMP;
@@ -44,6 +49,7 @@ public class Buying : MonoBehaviour
   }
 
   // Messages:
+
   void Update()
   {
     if(last1 != upgrade1)
@@ -77,7 +83,20 @@ public class Buying : MonoBehaviour
       {
         up2.SetActive(false);
       }
-    }  }
+    }
+    if(playerActor == null)
+    {
+      playerActor = PlayerController.Get.GetComponent<Interactor>();
+    }
+    if(playerActor.GetItem() == null)
+    {
+      upgrade1 = Upgrades.LAVA_LAMP;
+    }
+    else
+    {
+      upgrade1 = Upgrades.NONE;
+    }
+  }
 
   // Utilities:
 
@@ -86,23 +105,25 @@ public class Buying : MonoBehaviour
     switch(upgrade)
     {
       case Upgrades.LAVA_LAMP:
-        return 4;
-      case Upgrades.BELT_SPEED:
         return 5;
+      case Upgrades.BELT_SPEED:
+        return 10;
       case Upgrades.FRIEND_INFO:
         return 5;
       case Upgrades.FASTER_PLAYER:
-        return 5;
+        return 7;
       case Upgrades.MORE_FRIENDS:
-        return 5;
+        return 20;
       case Upgrades.LONGER_TURN:
         return 10;
       case Upgrades.EXTRA_SWAP:
-        return 10;
+        return 5;
       case Upgrades.EXTRA_CHECKOUT:
-        return 10;
+        return 15;
       case Upgrades.FRIEND_MONEY:
-        return 10;
+        return 5;
+      case Upgrades.ENDGAME:
+        return 100;
     }
     return 0;
   }
@@ -129,6 +150,8 @@ public class Buying : MonoBehaviour
         return "Now Hiring";
       case Upgrades.FRIEND_MONEY:
         return "FriendSpace Premium";
+      case Upgrades.ENDGAME:
+        return "Lava Lamp Factory";
     }
     return "Unknown Upgrade";
   }
@@ -154,9 +177,11 @@ public class Buying : MonoBehaviour
       case Upgrades.EXTRA_CHECKOUT:
         return "the present store is hiring more cachiers, allowing you to buy for two friends at once";
       case Upgrades.FRIEND_MONEY:
-        return "enhance your FriendSpace account, allowing you too see which friends gave you what presents";
+        return "enhance your FriendSpace account, allowing you too see how your friends feel about you";
+      case Upgrades.ENDGAME:
+        return "build a lava lamp factory and never run out of gifts for your friends again";
     }
-    return "something when wrong, you should not be seeing this";
+    return "something went wrong, you should not be seeing this";
   }
 
   private void ApplyUpgrade(Upgrades upgrade)
@@ -167,32 +192,53 @@ public class Buying : MonoBehaviour
         {
           ++GameStateManager.Collector.numberGiftsPurchased;
           ++GameStateManager.Collector.numberLavaLampsPurchased;
+          GameObject go = Instantiate<GameObject>(lavaLamp);
+          playerActor.AddItem(go.transform);
         } break;
       case Upgrades.BELT_SPEED:
         {
-        } break;
-      case Upgrades.FRIEND_INFO:
-        {
+          ++GameStateManager.State.currentGameUpgrade;
         } break;
       case Upgrades.FASTER_PLAYER:
         {
+          ++GameStateManager.State.currentGameUpgrade;
         } break;
       case Upgrades.MORE_FRIENDS:
         {
+          ++GameStateManager.State.currentGameUpgrade;
         } break;
       case Upgrades.LONGER_TURN:
         {
+          ++GameStateManager.State.currentGameUpgrade;
         } break;
       case Upgrades.EXTRA_SWAP:
         {
+          ++GameStateManager.State.currentGameUpgrade;
         } break;
       case Upgrades.EXTRA_CHECKOUT:
         {
+          ++GameStateManager.State.currentGameUpgrade;
         } break;
       case Upgrades.FRIEND_MONEY:
         {
+          ++GameStateManager.State.currentGameUpgrade;
+        } break;
+      case Upgrades.ENDGAME:
+        {
+          GameStateManager.IsMenu = true;
+          StartCoroutine(Ending());
         } break;
     }
+    GameStateManager.ApplyUpgrades();
+  }
+
+  private IEnumerator Ending()
+  {
+    endingFade.gameObject.SetActive(true);
+    StartCoroutine(HitchLib.Tweening.EasyUIShow(endingFade, 2.5f,
+          easingFade: HitchLib.Easing.EASE_QUAD_OUT));
+    yield return new WaitForSeconds(2.0f);
+    yield return HitchLib.Tweening.EasyUIShow(endingText, 2.0f);
   }
 
 }
@@ -208,5 +254,6 @@ public enum Upgrades
   MORE_FRIENDS,
   EXTRA_SWAP,
   EXTRA_CHECKOUT,
-  LAVA_LAMP
+  LAVA_LAMP,
+  ENDGAME
 }

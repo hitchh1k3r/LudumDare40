@@ -35,42 +35,50 @@ public class PresentMover : MonoBehaviour, IInteracatble, IInventory
     Vector3 interactionPos = positionInteraction.position;
     interactionPos.x = PlayerController.Get.transform.position.x;
     positionInteraction.position = interactionPos;
-    spawnTimer -= Time.deltaTime;
-    if(spawnTimer < 0)
+    if(StoreReferances.instance.storeTimerLeft > 0 ||
+          (GameStateManager.State.currentYear == 1 && GameStateManager.FriendToBuy.Count > 0))
     {
-      spawnTimer = Random.Range(spawnMin, spawnMax);
-      GameObject go = Instantiate<GameObject>(prefabPresent, transform);
-      HitchLib.ColorEnum[] presentColors = GameStateManager.PresentColors;
-      go.GetComponent<Present>().color = presentColors[Random.Range(0, presentColors.Length)];
-      go.GetComponent<InteractionPickup>().mount = this;
-      go.transform.position = positionSpawn.position;
-      presents.Add(go.transform);
-      go.SetActive(true);
-    }
-
-    Vector3 movement = Time.deltaTime * moveSpeed;
-    List<Transform> removeUs = new List<Transform>();
-    foreach(Transform present in presents)
-    {
-      present.position = present.position + movement;
-      if(present.position.x > despawnX)
+      spawnTimer -= Time.deltaTime;
+      if(spawnTimer < 0)
       {
-        if(present.GetComponent<Present>() != null)
-        {
-          Destroy(present.gameObject);
-          removeUs.Add(present);
-        }
-        else
-        {
-          present.position = positionSpawn.position;
-        }
+        spawnTimer = Random.Range(spawnMin, spawnMax);
+        GameObject go = Instantiate<GameObject>(prefabPresent, transform);
+        HitchLib.ColorEnum[] presentColors = GameStateManager.PresentColors;
+        Present present = go.GetComponent<Present>();
+        present.price = Random.Range(0, (int)GameStateManager.State.currentYear / 2) + 1;
+        present.color = presentColors[Random.Range(0, presentColors.Length)];
+        go.GetComponent<InteractionPickup>().mount = this;
+        go.transform.position = positionSpawn.position;
+        presents.Add(go.transform);
+        go.SetActive(true);
       }
     }
-    foreach(Transform r in removeUs)
-    {
-      presents.Remove(r);
-    }
 
+    if(StoreReferances.instance.storeTimerLeft > -20)
+    {
+      Vector3 movement = Time.deltaTime * moveSpeed;
+      List<Transform> removeUs = new List<Transform>();
+      foreach(Transform present in presents)
+      {
+        present.position = present.position + movement;
+        if(present.position.x > despawnX)
+        {
+          if(present.GetComponent<Present>() != null)
+          {
+            Destroy(present.gameObject);
+            removeUs.Add(present);
+          }
+          else
+          {
+            present.position = positionSpawn.position;
+          }
+        }
+      }
+      foreach(Transform r in removeUs)
+      {
+        presents.Remove(r);
+      }
+    }
   }
 
   // Utilities:

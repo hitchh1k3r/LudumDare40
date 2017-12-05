@@ -531,6 +531,7 @@ MonoBehaviour:
     happyPrecentLastYear: 0
     happyTarget: 0
   friendName: {fileID: 114758444844615628}
+  happiness: {fileID: 1725754863448434}
   happyBar: {fileID: 224397522708704614}
   happyBarChange: {fileID: 224421712999727364}
   statLine: {fileID: 114459589505637382}

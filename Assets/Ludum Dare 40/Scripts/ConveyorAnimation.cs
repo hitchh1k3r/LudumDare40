@@ -22,37 +22,40 @@ public class ConveyorAnimation : MonoBehaviour
 
   void Update()
   {
-    timer += Random.Range(0.75f, 1.25f) * Time.deltaTime;
-    if(timer > 0.25f)
+    if(StoreReferances.instance.storeTimerLeft > -20)
     {
-      timer = 0;
-      ++frame;
-      if(frame >= 2)
+      timer += Random.Range(0.75f, 1.25f) * Time.deltaTime;
+      if(timer > 0.25f)
       {
-        frame = 0;
-      }
-      if(frame == 0)
-      {
-        foreach(WallRenderer side in sides)
+        timer = 0;
+        ++frame;
+        if(frame >= 2)
         {
-          side.spriteTexture = frame1;
+          frame = 0;
+        }
+        if(frame == 0)
+        {
+          foreach(WallRenderer side in sides)
+          {
+            side.spriteTexture = frame1;
+          }
+        }
+        else
+        {
+          foreach(WallRenderer side in sides)
+          {
+            side.spriteTexture = frame2;
+          }
         }
       }
-      else
+      scroller += moveSpeed * Time.deltaTime;
+      if(scroller > 0.25f)
       {
-        foreach(WallRenderer side in sides)
-        {
-          side.spriteTexture = frame2;
-        }
+        scroller = 0;
       }
+      topForward.xOffset = scroller;
+      topBackwards.xOffset = 0.25f - scroller;
     }
-    scroller += moveSpeed * Time.deltaTime;
-    if(scroller > 0.25f)
-    {
-      scroller = 0;
-    }
-    topForward.xOffset = scroller;
-    topBackwards.xOffset = 0.25f - scroller;
   }
 
 }

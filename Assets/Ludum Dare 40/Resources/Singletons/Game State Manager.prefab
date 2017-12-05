@@ -55,6 +55,7 @@ MonoBehaviour:
   state:
     currentYear: 1
     currentMoney: 0
+    currentGameUpgrade: 0
   stats:
     longestFriendshipYears: 0
     longestFriendshipName: 
@@ -75,42 +76,10 @@ MonoBehaviour:
     price: 3
     friend: Santa C.
   friends: []
-  pendingRequests:
-  - name: Pablo N.
-    isFemale: 0
-    color: 11
-    friendedOnYear: 0
-    moneySpentOnFriend: 0
-    moneySpentOnPlayer: 0
-    numberGiftsFromPlayer: 0
-    numberGiftsToPlayer: 0
-    happyPrecent: 0.5
-    happyPrecentLastYear: 0.5
-    happyTarget: 0
-  - name: Sarah U.
-    isFemale: 1
-    color: 20
-    friendedOnYear: 0
-    moneySpentOnFriend: 0
-    moneySpentOnPlayer: 0
-    numberGiftsFromPlayer: 0
-    numberGiftsToPlayer: 0
-    happyPrecent: 0.5
-    happyPrecentLastYear: 0.5
-    happyTarget: 0
-  - name: Tom A.
-    isFemale: 0
-    color: 22
-    friendedOnYear: 0
-    moneySpentOnFriend: 0
-    moneySpentOnPlayer: 0
-    numberGiftsFromPlayer: 0
-    numberGiftsToPlayer: 0
-    happyPrecent: 0.5
-    happyPrecentLastYear: 0.5
-    happyTarget: 0
+  pendingRequests: []
   friendsToBuy: []
   friendsToQueue: []
   friendsBought: []
-  colorList: 710000003300000009000000
+  colorList: 7100000009000000090000003300000033000000710000008a000000330000007100000009000000880000008a000000
   presentColors: 
+  gameUps: 020000000100000007000000040000000800000005000000010000000700000006000000080000000a000000

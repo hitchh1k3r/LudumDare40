@@ -34,6 +34,12 @@ public class InteractionCheckout : MonoBehaviour, IInteracatble
   {
     if(actor.GetItem() != null && friend != null)
     {
+      Present present = actor.GetItem().GetComponent<Present>();
+      if(present != null)
+      {
+        return (GameStateManager.State.currentMoney >= present.price) ? InteractionType.Inventory :
+              InteractionType.None;
+      }
       return InteractionType.Inventory;
     }
     else

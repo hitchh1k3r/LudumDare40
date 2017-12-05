@@ -27,7 +27,8 @@ public class Request : MonoBehaviour
         GameStateManager.FriendQueue.Add(friend);
         ++GameStateManager.Collector.numberFriendRequestsAccepted;
       }
-      StartCoroutine(HitchLib.Tweening.EasyUIHide(group, 0.25f, callbackEnding: () => {
+      StartCoroutine(HitchLib.Tweening.EasyUIHide(group,
+            (GameStateManager.FriendRequests.Count >= 10) ? 0.05f : 0.25f, callbackEnding: () => {
               gameObject.SetActive(false);
               if(GameStateManager.FriendRequests.Count > 0)
               {
@@ -53,7 +54,8 @@ public class Request : MonoBehaviour
     }
     ignoreButton.SetActive(GameStateManager.State.currentYear > 1);
     gameObject.SetActive(true);
-    StartCoroutine(HitchLib.Tweening.EasyUIShow(group, 0.25f, callbackEnding: () => {
+    StartCoroutine(HitchLib.Tweening.EasyUIShow(group,
+          (GameStateManager.FriendRequests.Count >= 10) ? 0.05f : 0.25f, callbackEnding: () => {
             interactable = true;
           }));
   }

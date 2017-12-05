@@ -18,6 +18,7 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
   public List<FriendData> friendsBought;
   public HitchLib.ColorEnum[] colorList;
   public HitchLib.ColorEnum[] presentColors;
+  public Upgrades[] gameUps;
 
   // Static Accessors:
 
@@ -132,45 +133,147 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
 
   // Utilities:
 
+  public static void ApplyUpgrades()
+  {
+    NavigationPlane store = NavigationPlane.FindPlane("Store_Main");
+
+    if(State.currentGameUpgrade > 6)
+    {
+      StoreReferances.instance.belt.moveSpeed = new Vector3(2.0f, 0, 0);
+      StoreReferances.instance.belt.spawnMin = 0.75f;
+      StoreReferances.instance.belt.spawnMax = 0.75f;
+    }
+    else if(State.currentGameUpgrade > 1)
+    {
+      StoreReferances.instance.belt.moveSpeed = new Vector3(1.0f, 0, 0);
+      StoreReferances.instance.belt.spawnMin = 1.0f;
+      StoreReferances.instance.belt.spawnMax = 3.0f;
+    }
+    else
+    {
+      StoreReferances.instance.belt.moveSpeed = new Vector3(0.5f, 0, 0);
+      StoreReferances.instance.belt.spawnMin = 3.0f;
+      StoreReferances.instance.belt.spawnMax = 5.0f;
+    }
+
+    StoreReferances.instance.table1.SetActive(State.currentGameUpgrade > 2);
+    store.exceptions[1].navigable = !(State.currentGameUpgrade > 2);
+
+    StoreReferances.instance.table2.SetActive(State.currentGameUpgrade > 7);
+    store.exceptions[2].navigable = !(State.currentGameUpgrade > 7);
+
+    InteractionCheckout.instances[1].gameObject.SetActive(State.currentGameUpgrade > 4);
+    store.exceptions[7].navigable = !(State.currentGameUpgrade > 4);
+    store.exceptions[8].navigable = !(State.currentGameUpgrade > 4);
+    store.exceptions[9].navigable = !(State.currentGameUpgrade > 4);
+
+    InteractionCheckout.instances[2].gameObject.SetActive(State.currentGameUpgrade > 9);
+    store.exceptions[10].navigable = !(State.currentGameUpgrade > 9);
+    store.exceptions[11].navigable = !(State.currentGameUpgrade > 9);
+    store.exceptions[12].navigable = !(State.currentGameUpgrade > 9);
+
+    if(!StoreReferances.instance.storeTimerOn)
+    {
+      StoreReferances.instance.storeTimerLeft = (State.currentGameUpgrade > 5) ? 150 : 75;
+    }
+  }
+
+  public static void SetUpgrades()
+  {
+    if(State.currentGameUpgrade < instance.gameUps.Length)
+    {
+      Buying.upgrade2 = instance.gameUps[State.currentGameUpgrade];
+    }
+    else
+    {
+      Buying.upgrade2 = Upgrades.NONE;
+    }
+  }
+
   public static void NewYear()
   {
     instance.pendingRequests.Clear();
-    for(int i = 0; i < 2; ++i)
+    int numReq = (int)(((State.currentGameUpgrade > 8) ? 1.0f : 0.25f) * instance.friends.Count) +
+          1;
+    if(numReq > 100)
+    {
+      numReq = 100;
+    }
+    for(int i = 0; i < numReq; ++i)
     {
       instance.pendingRequests.Add(GenerateFriend());
     }
 
-    // FRIEND LOST!
+    StoreReferances.instance.storeTimerOn = false;
+    SetUpgrades();
+    ApplyUpgrades();
 
-    // GET PRESENTS FROM FRIENDS
-    foreach(FriendData friend in instance.friends)
+    foreach(FriendData friend in instance.friendsToBuy)
     {
-      PresentData present;
-      present.color = friend.color;
-      present.price = 1;
-      present.friend = friend.name;
-      instance.presents.Add(present);
+      friend.happyTarget -= 0.25f;
     }
 
-    // NEW UPGRADES
-
-    // CALCULATE SUPERLATIVES (IN THE COLLECTOR, FOR HS SYSTEM)
-
+    List<FriendData> lostFriends = new List<FriendData>();
     foreach(FriendData friend in instance.friends)
     {
       if(friend.happyTarget < 0)
       {
-        friend.happyTarget = 0;
+        ++instance.stats.numberFriendsLost;
+        lostFriends.Add(friend);
       }
-      if(friend.happyTarget > 1)
+      else
       {
-        friend.happyTarget = 1;
+        if(friend.happyTarget > 1)
+        {
+          friend.happyTarget = 1;
+        }
+        friend.happyPrecentLastYear = friend.happyPrecent;
+        friend.happyPrecent = friend.happyTarget;
+        friend.happyScore += friend.happyPrecent;
+        friend.angryScore += (1 - friend.happyPrecent);
+        instance.friendsToBuy.Add(friend);
+        instance.friendsToQueue.Add(friend);
       }
-      friend.happyPrecentLastYear = friend.happyPrecent;
-      friend.happyPrecent = friend.happyTarget;
-      instance.friendsToBuy.Add(friend);
-      instance.friendsToQueue.Add(friend);
     }
+    foreach(FriendData friend in lostFriends)
+    {
+      instance.friends.Remove(friend);
+    }
+
+    foreach(FriendData friend in instance.friends)
+    {
+      PresentData present;
+      present.color = friend.color;
+      present.price = UnityEngine.Random.Range(2, 4);
+      present.friend = friend.name;
+      instance.presents.Add(present);
+    }
+
+    foreach(FriendData friend in instance.friends)
+    {
+      if(friend.happyScore > instance.stats.happiestFriendScore)
+      {
+        instance.stats.happiestFriendName = friend.name;
+        instance.stats.happiestFriendScore = friend.happyScore;
+      }
+      if(friend.angryScore > instance.stats.angriestFriendScore)
+      {
+        instance.stats.angriestFriendName = friend.name;
+        instance.stats.angriestFriendScore = friend.angryScore;
+      }
+
+      if((State.currentYear - friend.friendedOnYear) > instance.stats.longestFriendshipYears)
+      {
+        instance.stats.longestFriendshipName = friend.name;
+        instance.stats.longestFriendshipYears = (State.currentYear - friend.friendedOnYear);
+      }
+
+      if(instance.friends.Count > instance.stats.maxConcurrentFriends)
+      {
+        instance.stats.maxConcurrentFriends = instance.friends.Count;
+      }
+    }
+
     PrepareFriends();
     SaveGame();
   }
@@ -228,9 +331,9 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
     friend.name = NameManager.GetName(friend.isFemale);
     friend.color = instance.colorList[UnityEngine.Random.Range(0,
           Math.Min(instance.state.currentYear, instance.colorList.Length))];
-    friend.happyPrecent = 0.5f;
-    friend.happyPrecentLastYear = 0.5f;
-    friend.happyTarget = 0.5f;
+    friend.happyPrecent = 0.25f;
+    friend.happyPrecentLastYear = 0.25f;
+    friend.happyTarget = 0.25f;
     return friend;
   }
 
@@ -260,7 +363,15 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
     data.presents = presents;
     data.friends = friends;
     data.friendRequests = pendingRequests.Count;
+    data.playerName = NameManager.GetMyName();
+    data.ldName = LudumDareAPI.GetUsername();
     PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
+    WWWForm form = new WWWForm();
+    data.friends = null;
+    data.presents = null;
+    form.AddField("SaveData", JsonUtility.ToJson(data));
+    WWW req = new WWW("https://hitchh1k3rsguide.com/api/ld40_highscore.php", form);
+    StartCoroutine(req);
   }
 
   public static bool LoadGame()
@@ -281,6 +392,15 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
       presents = data.presents;
       friends = data.friends;
       fReq = data.friendRequests;
+      if(!string.IsNullOrEmpty(data.playerName))
+      {
+        string[] nameBits = data.playerName.Split(new [] {' '}, 2);
+        NameManager.SetMyName(nameBits[0], nameBits[1]);
+      }
+      if(!string.IsNullOrEmpty(data.ldName))
+      {
+        LudumDareAPI.SetUser(data.ldName, () => {});
+      }
       loaded = true;
     }
     pendingRequests.Clear();
@@ -289,6 +409,8 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
       pendingRequests.Add(GenerateFriend());
     }
     PrepareFriends();
+    SetUpgrades();
+    ApplyUpgrades();
     return loaded;
   }
 
@@ -300,6 +422,7 @@ public class CurrentState
 
   public int currentYear;
   public int currentMoney;
+  public int currentGameUpgrade;
 
 }
 
@@ -312,6 +435,8 @@ public struct SaveData
   public List<PresentData> presents;
   public List<FriendData> friends;
   public int friendRequests;
+  public string playerName;
+  public string ldName;
 
 }
 
@@ -340,16 +465,28 @@ public class FriendData
   public float happyPrecent;
   public float happyPrecentLastYear;
   public float happyTarget;
+  public float happyScore;
+  public float angryScore;
 
   public void GivePresent(Transform item)
   {
     GameStateManager.FriendToBuy.Remove(this);
     GameStateManager.FriendBought.Add(this);
     Present present = item.GetComponent<Present>();
-    happyTarget += 0.1f;
-    if(present == null || present.color == color)
+    if(present != null)
     {
-      happyTarget += 0.4f;
+      if(present.color == color)
+      { // CORRECT COLOR
+        happyTarget += 0.15f;
+      }
+      else
+      {
+        happyTarget += 0.0f;
+      }
+    }
+    else
+    { // LAVA LAMP
+      happyTarget += 0.3f;
     }
   }
 
@@ -361,9 +498,9 @@ public class StatCollector
 
   public int longestFriendshipYears;
   public string longestFriendshipName;
-  public int happiestFriendScore;
+  public float happiestFriendScore;
   public string happiestFriendName;
-  public int angriestFriendScore;
+  public float angriestFriendScore;
   public string angriestFriendName;
   public int maxConcurrentFriends;
   public int moneySpent;

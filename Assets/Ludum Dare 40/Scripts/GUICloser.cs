@@ -15,6 +15,10 @@ public class GUICloser : MonoBehaviour
     {
       request.Show(GameStateManager.FriendRequests[0]);
     }
+    if(GameStateManager.State.currentYear > 1)
+    {
+      closePrompt.SetActive(true);
+    }
   }
 
   void Update()

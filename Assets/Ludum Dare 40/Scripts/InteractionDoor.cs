@@ -37,6 +37,7 @@ public class InteractionDoor : MonoBehaviour, IInteracatble
     {
       PresentMover.On();
       GameStateManager.TryAddingCachiers();
+      StoreReferances.instance.storeTimerOn = true;
     }
     else
     {

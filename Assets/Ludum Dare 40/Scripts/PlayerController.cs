@@ -60,7 +60,12 @@ public class PlayerController : MonoBehaviour
           moveVector /= speed;
           speed = 1;
         }
-        Vector3 newPos = transform.localPosition + Time.deltaTime * moveSpeed * moveVector;
+        float accSpeed = moveSpeed;
+        if(GameStateManager.State.currentGameUpgrade > 3)
+        {
+          accSpeed *= 1.5f;
+        }
+        Vector3 newPos = transform.localPosition + Time.deltaTime * accSpeed * moveVector;
         NavigationPlane.ValidMove(ref newPos, ref navPlane);
         transform.localPosition = newPos;
         targetRotation = Quaternion.LookRotation(moveVector);
