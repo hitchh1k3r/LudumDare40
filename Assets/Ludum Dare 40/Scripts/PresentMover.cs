@@ -45,7 +45,7 @@ public class PresentMover : MonoBehaviour, IInteracatble, IInventory
         GameObject go = Instantiate<GameObject>(prefabPresent, transform);
         HitchLib.ColorEnum[] presentColors = GameStateManager.PresentColors;
         Present present = go.GetComponent<Present>();
-        present.price = Random.Range(0, (int)GameStateManager.State.currentYear / 2) + 1;
+        present.price = Random.Range(0, 1 + ((int)GameStateManager.State.currentYear / 2)) + 1;
         present.color = presentColors[Random.Range(0, presentColors.Length)];
         go.GetComponent<InteractionPickup>().mount = this;
         go.transform.position = positionSpawn.position;

@@ -174,7 +174,7 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
 
     if(!StoreReferances.instance.storeTimerOn)
     {
-      StoreReferances.instance.storeTimerLeft = (State.currentGameUpgrade > 5) ? 150 : 75;
+      StoreReferances.instance.storeTimerLeft = (State.currentGameUpgrade > 5) ? 300 : 150;
     }
   }
 

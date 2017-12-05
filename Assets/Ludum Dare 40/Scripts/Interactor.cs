@@ -33,88 +33,91 @@ public class Interactor : MonoBehaviour, IInventory
 
   void Update()
   {
-    float distanceInventory = float.PositiveInfinity;
-    Plane forwardPlane = new Plane(transform.forward, transform.position);
-    IInteracatble nearestInventory = null;
-    Collider[] objects = Physics.OverlapSphere(transform.position, range, layerInteration);
-    foreach(Collider obj in objects)
+    if(!GameStateManager.IsMenu)
     {
-      IInteracatble[] interacables = obj.GetComponents<IInteracatble>();
-      foreach(IInteracatble inter in interacables)
+      float distanceInventory = float.PositiveInfinity;
+      Plane forwardPlane = new Plane(transform.forward, transform.position);
+      IInteracatble nearestInventory = null;
+      Collider[] objects = Physics.OverlapSphere(transform.position, range, layerInteration);
+      foreach(Collider obj in objects)
       {
-        InteractionType valid = inter.CanInteract(this);
-        if(valid != InteractionType.None && forwardPlane.GetSide(obj.transform.position))
+        IInteracatble[] interacables = obj.GetComponents<IInteracatble>();
+        foreach(IInteracatble inter in interacables)
         {
-          if((valid & InteractionType.Inventory) == InteractionType.Inventory)
+          InteractionType valid = inter.CanInteract(this);
+          if(valid != InteractionType.None && forwardPlane.GetSide(obj.transform.position))
           {
-            float dist = (obj.transform.position - transform.position).sqrMagnitude;
-            if(dist < distanceInventory)
+            if((valid & InteractionType.Inventory) == InteractionType.Inventory)
             {
-              distanceInventory = dist;
-              nearestInventory = inter;
+              float dist = (obj.transform.position - transform.position).sqrMagnitude;
+              if(dist < distanceInventory)
+              {
+                distanceInventory = dist;
+                nearestInventory = inter;
+              }
             }
           }
         }
       }
-    }
 
-    if(nearestInventory != targetInventory)
-    {
-      targetInventory = nearestInventory;
-      if(targetInventory == null)
+      if(nearestInventory != targetInventory)
       {
-        if(animateInventory != null)
-        {
-          StopCoroutine(animateInventory);
-        }
-        showingInventory = false;
-        animateInventory = StartCoroutine(HitchLib.Tweening.EasyPopOut(
-              indicatorInventory.transform, 0.25f, callbackEnding: () => {
-                  indicatorInventory.SetActive(false);
-                  attachInventory.enabled = false;
-                  attachInventory.target = null;
-                }));
-      }
-      else
-      {
-        if(showingInventory)
+        targetInventory = nearestInventory;
+        if(targetInventory == null)
         {
           if(animateInventory != null)
           {
             StopCoroutine(animateInventory);
           }
-          Vector3 startPos = indicatorInventory.transform.position;
-          Transform target = targetInventory.InteractIconPosition(InteractionType.Inventory, this);
-          attachInventory.enabled = false;
-          attachInventory.target = target;
-          animateInventory = StartCoroutine(HitchLib.Tweening.Action((t) => {
-                  indicatorInventory.transform.position =
-                        Vector3.Lerp(startPos, target.position, t);
-                }, 0.25f, HitchLib.Easing.EASE_CUBIC_IN_OUT, callbackEnding: () => {
-                    attachInventory.enabled = true;
-                }));
+          showingInventory = false;
+          animateInventory = StartCoroutine(HitchLib.Tweening.EasyPopOut(
+                indicatorInventory.transform, 0.25f, callbackEnding: () => {
+                    indicatorInventory.SetActive(false);
+                    attachInventory.enabled = false;
+                    attachInventory.target = null;
+                  }));
         }
         else
         {
-          if(animateInventory != null)
+          if(showingInventory)
           {
-            StopCoroutine(animateInventory);
-          }
-          indicatorInventory.SetActive(true);
-          attachInventory.enabled = true;
-          attachInventory.target = targetInventory.InteractIconPosition(InteractionType.Inventory,
-                this);
-          animateInventory = StartCoroutine(HitchLib.Tweening.EasyPopIn(
-                indicatorInventory.transform, 0.5f, callbackEnding: () => {
-                    showingInventory = true;
+            if(animateInventory != null)
+            {
+              StopCoroutine(animateInventory);
+            }
+            Vector3 startPos = indicatorInventory.transform.position;
+            Transform target = targetInventory.InteractIconPosition(InteractionType.Inventory, this);
+            attachInventory.enabled = false;
+            attachInventory.target = target;
+            animateInventory = StartCoroutine(HitchLib.Tweening.Action((t) => {
+                    indicatorInventory.transform.position =
+                          Vector3.Lerp(startPos, target.position, t);
+                  }, 0.25f, HitchLib.Easing.EASE_CUBIC_IN_OUT, callbackEnding: () => {
+                      attachInventory.enabled = true;
                   }));
+          }
+          else
+          {
+            if(animateInventory != null)
+            {
+              StopCoroutine(animateInventory);
+            }
+            indicatorInventory.SetActive(true);
+            attachInventory.enabled = true;
+            attachInventory.target = targetInventory.InteractIconPosition(InteractionType.Inventory,
+                  this);
+            animateInventory = StartCoroutine(HitchLib.Tweening.EasyPopIn(
+                  indicatorInventory.transform, 0.5f, callbackEnding: () => {
+                      showingInventory = true;
+                    }));
+          }
         }
       }
-    }
 
-    if(Input.GetButtonDown("Grab") && targetInventory != null)
-    {
-      targetInventory.Interact(InteractionType.Inventory, this);
+      if(Input.GetButtonDown("Grab") && targetInventory != null)
+      {
+        targetInventory.Interact(InteractionType.Inventory, this);
+      }
     }
   }
 

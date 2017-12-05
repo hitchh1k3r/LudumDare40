@@ -239,6 +239,10 @@ public class Buying : MonoBehaviour
           easingFade: HitchLib.Easing.EASE_QUAD_OUT));
     yield return new WaitForSeconds(2.0f);
     yield return HitchLib.Tweening.EasyUIShow(endingText, 2.0f);
+#if !UNITY_WEBGL
+    yield return new WaitForSeconds(5.0f);
+    Application.Quit();
+#endif
   }
 
 }

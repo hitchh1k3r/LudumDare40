@@ -33,12 +33,6 @@ public class WallRenderer : MonoBehaviour
     {
       block = new MaterialPropertyBlock();
     }
-    else
-    {
-#if !UNITY_EDITOR
-      return;
-#endif
-    }
     block.Clear();
     if(lightTexture != null)
     {
