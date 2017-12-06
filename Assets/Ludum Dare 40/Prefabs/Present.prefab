@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5c1f894cb9345c3b003400c5cc5ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lateralBillboard: 1
+  lateralBillboard: 0
 --- !u!114 &114217013217800024
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -229,8 +229,11 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
         }
         friend.happyPrecentLastYear = friend.happyPrecent;
         friend.happyPrecent = friend.happyTarget;
-        friend.happyScore += friend.happyPrecent;
-        friend.angryScore += (1 - friend.happyPrecent);
+        float friendYears = instance.state.currentYear - friend.friendedOnYear;
+        friend.happyScore = (friend.happyPrecent + (friend.happyScore * (friendYears-1.0f))) /
+              friendYears;
+        friend.angryScore = ((1.0f - friend.happyPrecent) + (friend.angryScore *
+              (friendYears-1.0f))) / friendYears;
         instance.friendsToBuy.Add(friend);
         instance.friendsToQueue.Add(friend);
       }
@@ -357,7 +360,7 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
   [HitchLib.Invokable]
   private void DoSaveGame()
   {
-    SaveData data;
+    SaveData data = new SaveData();
     data.state = state;
     data.stats = stats;
     data.presents = presents;
@@ -366,12 +369,21 @@ public class GameStateManager : HitchLib.Singleton // MonoBehaviour
     data.playerName = NameManager.GetMyName();
     data.ldName = LudumDareAPI.GetUsername();
     PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
+    SendHighscore();
+  }
+
+  public static Coroutine SendHighscore()
+  {
+    SaveData data = new SaveData();
+    data.state = instance.state;
+    data.stats = instance.stats;
+    data.friendRequests = instance.pendingRequests.Count;
+    data.playerName = NameManager.GetMyName();
+    data.ldName = LudumDareAPI.GetUsername();
     WWWForm form = new WWWForm();
-    data.friends = null;
-    data.presents = null;
     form.AddField("SaveData", JsonUtility.ToJson(data));
     WWW req = new WWW("https://hitchh1k3rsguide.com/api/ld40_highscore.php", form);
-    StartCoroutine(req);
+    return instance.StartCoroutine(req);
   }
 
   public static bool LoadGame()
@@ -510,5 +522,6 @@ public class StatCollector
   public int numberLavaLampsPurchased;
   public int numberFriendRequestsAccepted;
   public int numberFriendsLost;
+  public int presentsSold;
 
 }

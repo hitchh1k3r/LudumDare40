@@ -29,7 +29,7 @@ public class GUICloser : MonoBehaviour
       StartCoroutine(HitchLib.Tweening.EasyUIShow(closePrompt.GetComponent<CanvasGroup>()));
     }
     if((GameStateManager.State.currentYear > 1 || closePrompt.activeSelf) &&
-          Input.GetButtonDown("Cancel"))
+          Input.GetButtonDown("Cancel") && GameStateManager.State.currentGameUpgrade < 11)
     {
       InterfaceManager.HideMenu();
     }

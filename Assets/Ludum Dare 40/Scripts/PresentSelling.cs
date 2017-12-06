@@ -25,6 +25,7 @@ public class PresentSelling : MonoBehaviour, IPointerClickHandler
   public void OnPointerClick(PointerEventData eventData)
   {
     GameStateManager.Presents.Remove(present);
+    ++GameStateManager.Collector.presentsSold;
     GameStateManager.Collector.moneyEarned += present.price;
     GameStateManager.State.currentMoney += present.price;
     Destroy(gameObject);

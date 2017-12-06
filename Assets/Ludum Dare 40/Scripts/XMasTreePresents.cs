@@ -16,12 +16,6 @@ public class XMasTreePresents : MonoBehaviour
 
   void Update()
   {
-    if(Input.GetButtonDown("Submit"))
-    {
-      PresentData present = new PresentData();
-      present.color = HitchLib.ColorEnum.DARK_TURQUOISE;
-      GameStateManager.Presents.Add(present);
-    }
     List<PresentData> presentData = GameStateManager.Presents;
     int count = presentData.Count;
     if(lastCount != count)
